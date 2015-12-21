@@ -1,0 +1,555 @@
+\documentclass{scrartcl}
+\usepackage{etoolbox}
+\usepackage{bbm}
+\usepackage{amsmath}
+\usepackage{mathabx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\pagestyle{fancy}
+\usepackage{subcaption}
+\setlength{\parskip}{0em}
+\setlength{\parindent}{2em}
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+
+
+
+
+%-----------------------------------------------------------------------------
+% header
+\lhead{Huwenbo Shi (603-778-363) shihuwenbo@ucla.edu}
+
+% title
+\newcommand*{\TitleFont}{
+      \usefont{\encodingdefault}{\rmdefault}{b}{n}
+      \fontsize{16}{20}
+      \selectfont}
+\newcommand*{\AuthorFont}{
+      \usefont{\encodingdefault}{\rmdefault}{r}{n}
+      \fontsize{12}{20}
+      \selectfont}
+\title{\TitleFont Biomath 210 Homework 1}
+\author{\AuthorFont Huwenbo Shi (603-778-363) shihuwenbo@ucla.edu}
+\maketitle
+
+\newcommand{\E}{\mathrm{E}}
+\def\mb#1{\mathbf{#1}}
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 1.1}
+
+By the definition of MM algorithm, $x_{n+1}$ minimizes $g(x|x_n)$, therefore
+\begin{equation}
+g(x_{n+1}|x_n) \le g(x_n|x_n) = f(x_n),
+\end{equation}
+where the equality follows from the definition of surrogate function. Since
+\begin{equation}
+	g(x|x_{n-1}) \ge f(x)
+\end{equation}
+for all $x$ in the domain of $f(x)$ by the definition of surrogate function,
+then the following inequality must hold
+\begin{equation}
+	g(x_n|x_{n-1}) \ge f(x_n) .
+\end{equation}
+Therefore, we conclude that
+\begin{equation}
+	g(x_{n+1}|x_n) \le f(x_n) \le g(x_n|x_{n-1}) ,
+\end{equation}
+and that the sequence $g(x_{n+1}|x_n)$ decreases.
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 1.2}
+
+Without loss of generality, assume $g(\mb{z}|\mb{y})$ is a majorization of
+$f(\mb{z})$. For $\mb{y} = \mb{x}$, let
+$h(\mb{z}) = g(\mb{z}|\mb{x})-f(\mb{z})$. By the definition of surrogate
+function, $h(\mb{z}) \ge 0$,  because $g(\mb{z}|\mb{x}) \ge f(\mb{z})$
+for all $\mb{z}$ in the domain of $f$. When $\mb{z} = \mb{x}$, 
+$h(\mb{z})$ attains its minimum, 0, because
+\begin{equation}
+h(\mb{x}) = g(\mb{x}|\mb{x})-f(\mb{x}) = f(\mb{x})-f(\mb{x}) = 0 .
+\end{equation}
+At the point $\mb{x}$,
+\begin{equation}
+	\nabla h(\mb{x}) = \nabla g(\mb{x}|\mb{x})-\nabla f(\mb{x}) = 0 ,
+\end{equation}
+from which we conclude
+\begin{equation}
+	\nabla g(\mb{x}|\mb{x}) = \nabla f(\mb{x}) .
+\end{equation}
+
+Similar approach can be used to show
+$\nabla g(\mb{x}|\mb{x}) = \nabla f(\mb{x})$ when $g(\mb{z}|\mb{y})$ is
+a minorization of $f(\mb{z})$. In this case, $h(\mb{z})$ attains its
+maximum at the point $\mb{x}$.
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 1.3}
+
+Assume $g(\mb{z}|\mb{y})$ minorizes $f(\mb{z})$. For $\mb{y}=\mb{z}$, the
+function $h(\mb{z})=f(\mb{z})-g(\mb{x}|\mb{z})$ attains its minimum at the
+point $\mb{x}$, at which $h(\mb{x})=0$ and $\nabla h(\mb{x}) = 0$.
+For any vector $\mb{v}$ and sufficient small $t$, we have
+\begin{align}
+\begin{split}
+0 & \le h(\mb{x}+t\mb{v})-h(\mb{x}) \\
+& = \int_0^1 [\nabla h(\mb{x}+rt\mb{v})-\nabla h(\mb{x})]^*t\mb{v} \; dr \\
+& = \int_0^1 [\nabla f(\mb{x}+rt\mb{v}) -\nabla f(\mb{x})
+-\nabla g(\mb{x}+rt\mb{v}|\mb{x})+\nabla g(\mb{x}|\mb{x})]^*t\mb{v} \; dr \\
+& = \int_0^1 [\nabla f(\mb{x}+rt\mb{v}) -\nabla f(\mb{x}) \; dr -
+\int_0^1\nabla g(\mb{x}+rt\mb{v}|\mb{x})-\nabla g(\mb{x}|\mb{x})]^*t\mb{v}\;dr \\
+& = t^2 \int_0^1 [s_f^2(\mb{x}+rt\mb{v},\mb{x})r\mb{v}]^*\mb{v} \; dr -
+t^2 \int_0^1 [s_g^2(\mb{x}+rt\mb{v},\mb{x})r\mb{v}]^*\mb{v} \; dr .
+\end{split}
+\end{align}
+Dividing both sides of the inequality by $t^2$, and sending $t$ to 0 gives
+\begin{align}
+\begin{split}
+0 & \le \int_0^1 [s_f^2(\mb{x},\mb{x})r\mb{v}]^*\mb{v} \; dr -
+\int_0^1 [s_g^2(\mb{x},\mb{x})r\mb{v}]^*\mb{v} \; dr \\
+& = \mb{v}^* \left( \int_0^1 s_f^2(\mb{x},\mb{x}) r \; dr \right)\mb{v}
+- \mb{v}^* \left( \int_0^1 s_g^2(\mb{x},\mb{x}) r \; dr \right)\mb{v} \\
+& = \mb{v}^* \left( d^2f(\mb{x}) - d^2g(\mb{x}|\mb{x}) \right) \mb{v} .
+\end{split}
+\end{align}
+Therefore, the difference matrix $d^2f(\mb{x}) - d^2g(\mb{x}|\mb{x})$ is
+positive semidefinite.
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 1.6}
+
+Minimizing $f(\mb{\theta})$ is equivalent to minimizing
+\begin{equation}
+{1 \over 2} \sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu-\alpha_i-\beta_j)^2 .
+\end{equation}
+With the constraints $\sum_{i=1}^I\alpha_i=0$ and $\sum_{j=1}^J\beta_j=0$,
+we get the Lagragian 
+\begin{equation}
+\mathcal{L}(\mb{\theta}, \mb{\lambda})=
+{1 \over 2} \sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu-\alpha_i-\beta_j)^2
++ \lambda_1 \sum_{i=1}^I \alpha_i + \lambda_2 \sum_{j=1}^J \beta_j .
+\end{equation}
+The partial derivative of $\mathcal{L}$ with respect to each variables are
+\begin{equation}
+{\partial \mathcal{L} \over \partial \mu} =
+\sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu-\alpha_i-\beta_j) ,
+\label{eqn:par_mu}
+\end{equation}
+\begin{equation}
+{\partial \mathcal{L} \over \partial \alpha_i} =
+\sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu-\alpha_i-\beta_j)+\lambda_1 ,
+\label{eqn:par_alpha}
+\end{equation}
+\begin{equation}
+{\partial \mathcal{L} \over \partial \beta_j} =
+\sum_{i=1}^I \sum_{k=1}^K (y_{ijk}-\mu-\alpha_i-\beta_j)+\lambda_2 .
+\label{eqn:par_beta}
+\end{equation}
+
+Set Equation \eqref{eqn:par_mu} to 0, we get
+\begin{align}
+\begin{split}
+0 = \sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu-\alpha_i-\beta_j) ,
+\end{split}
+\end{align}
+\begin{equation}
+\mu = -{1 \over I} \sum_{i=1}^I \alpha_i - {1 \over J} \sum_{j=1}^J \beta_j
++ {1 \over IJK} \sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K y_{ijk} .
+\end{equation}
+
+Set Equation \eqref{eqn:par_alpha} to 0, we get
+\begin{align}
+\begin{split}
+0 & = \sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu-\alpha_i-\beta_j)+\lambda_1 \\
+  & = -JK \mu -JK \alpha_i - K \sum_{j=1}^J \beta_j
+      + \sum_{j=1}^J \sum_{k=1}^K y_{ijk} + \lambda_1 
+\end{split}
+\end{align}
+Sum over $i$ on both sides, we get
+\begin{align}
+\begin{split}
+0 & = -IJK \mu -JK \sum_{i=1}^I \alpha_i - IK \sum_{j=1}^J \beta_j
+      + \sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K y_{ijk} + I\lambda_1 \\
+  & = \left( JK \sum_{i=1}^I \alpha_i + IK \sum_{j=1}^J \beta_j
+     -\sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K y_{ijk} \right) \\
+  & -IJK \mu -JK \sum_{i=1}^I \alpha_i - IK \sum_{j=1}^J \beta_j
+      + \sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K y_{ijk} + I\lambda_1 \\
+  & = I\lambda_1 .
+\end{split}
+\end{align}
+Therefore, we get $\lambda_1 = 0$. Applying similar approach,
+we get $\lambda_2 = 0$ as well.
+
+By substituting $\lambda_1=0$ and $\lambda_2=0$ into the partial derivatives
+and setting them to 0, we arrive at the following equations
+\begin{equation}
+-K \sum_{i=1}^I \alpha_i - K \sum_{j=1}^J \beta_j
++ \sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu) = 0
+\label{eqn:one}
+\end{equation}
+\begin{equation}
+- K \sum_{j=1}^J \beta_j
++ \sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu-\alpha_i) = 0
+\label{eqn:two}
+\end{equation} 
+\begin{equation}
+- K \sum_{i=1}^I \alpha_i
++ \sum_{i=1}^I \sum_{k=1}^K (y_{ijk}-\mu-\beta_j) = 0
+\label{eqn:three}
+\end{equation}
+
+The zero Lagrange multipliers implies that solving the problem with the constraint
+is equivalent to solving the problem without the constraint. In other words,
+the solution to the unconstrained problem always satisfies the constraint.
+Substituting $\sum_i \alpha_i = 0$ and $\sum_j \beta_j = 0$ into the three equations
+above gives the following equations
+\begin{align}
+\begin{split}
+& -IJK \mu + \sum_{i=1}^I \sum_{j=1}^J \sum_{k=1}^K y_{ijk} = 0 \\
+& -JK \alpha_i + \sum_{j=1}^J \sum_{k=1}^K (y_{ijk}-\mu) = 0 \\
+& -IK \beta_j + \sum_{i=1}^I \sum_{k=1}^K (y_{ijk}-\mu) = 0
+\end{split}
+\label{eqn:solve}
+\end{align}
+Solve for $\mu$, $\alpha_i$, and $\beta_j$ in Equation \eqref{eqn:solve}
+results in the formula in (1.6).
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 1.13}
+
+We maximize $L(\mb{p})$ with the constraints $p_A + p_B + p_O = 1$ $\mb{p}$
+and $\ge 0$. If we initialize the variables with non-negative values and keep
+the variables non-negative during the update, then we can consider only the
+equality constraint. Thus, we arrive at the Lagrangian
+\begin{equation}
+	\begin{split}
+	\mathcal{L} (\mb{p}, \lambda)
+	& = x_A \ln(p_A^2+2p_Ap_O) + x_B \ln(p_B^2+2p_Bp_O) \\
+	& + x_{AB} \ln(2p_Ap_B)+x_O \ln p_O^2 \\
+	& + \lambda ( p_A + p_B + p_O ) - \lambda .
+	\end{split}
+\end{equation}
+Following (1.3) we find a minorization $g(\mb{p} | \mb{p}_n)$ for $\mathcal{L} (\mb{p}, \lambda)$
+\begin{equation}
+	\begin{split}
+		\mathcal{L} (\mb{p}, \lambda)
+		& \ge x_A \left[ \frac{p_{n,A}^2}{p_{n,A}^2+2p_{n,A}p_{n,O}} \ln p_A^2 +
+						 \frac{p_{n,A}p_{n,O}}{p_{n,A}^2+2p_{n,A}p_{n,O}} \ln p_Ap_O		          
+		          \right] \\
+		& + x_B \left[ \frac{p_{n,B}^2}{p_{n,B}^2+2p_{n,B}p_{n,O}} \ln p_B^2 +
+						 \frac{p_{n,B}p_{n,O}}{p_{n,B}^2+2p_{n,B}p_{n,O}} \ln p_Bp_O		          
+		        \right] \\
+		& + x_{AB} \left( \ln p_A + \ln p_B \right) + 2x_O \ln p_O \\
+		& + \lambda ( p_A + p_B + p_O ) - \lambda + c_n ,
+	\end{split}
+\end{equation}
+where $c_n$ is a variable dependent only on $\mb{p}$, $x_A$, $x_B$, $x_{AB}$, and $x_O$.
+Taking the partial derivative of $g(\mb{p}|\mb{p}_n)$ with respect to $p_A$, we get
+\begin{equation}
+	\begin{split}
+	{\partial g \over \partial p_A}
+	= \left( \frac{2 x_A p_{n,A}^2}{p_{n,A}^2 + 2p_{n,A}p_{n,O}}
+	+ \frac{ x_A p_{n,A}p_{n,O}}{p_{n,A}^2 + 2p_{n,A}p_{n,O}}
+	+ x_{AB} \right) {1 \over p_A} + \lambda .
+	\end{split}
+\end{equation}
+For $p_B$ we get
+\begin{equation}
+	\begin{split}
+	{\partial g \over \partial p_B}
+	= \left( \frac{2 x_B p_{n,B}^2}{p_{n,B}^2 + 2p_{n,B}p_{n,O}}
+	+ \frac{ x_B p_{n,B}p_{n,O}}{p_{n,B}^2 + 2p_{n,B}p_{n,O}}
+	+ x_{AB} \right) {1 \over p_B} + \lambda .
+	\end{split}
+\end{equation}
+Lastly for $p_O$ we get
+\begin{equation}
+	\begin{split}
+	{\partial g \over \partial p_O}
+	= \left( \frac{ x_A p_{n,A}p_{n,O}}{p_{n,A}^2 + 2p_{n,A}p_{n,O}}
+	+ \frac{ x_B p_{n,B}p_{n,O}}{p_{n,B}^2 + 2p_{n,B}p_{n,O}}
+	+ 2 x_O \right) {1 \over p_O} + \lambda .
+	\end{split}
+\end{equation}
+Set the partial derivatives to 0, we get
+\begin{equation}
+	\begin{split}
+		-\lambda p_A & = \left( \frac{2 x_A p_{n,A}^2}{p_{n,A}^2 + 2p_{n,A}p_{n,O}}
+					+ \frac{ x_A p_{n,A}p_{n,O}}{p_{n,A}^2 + 2p_{n,A}p_{n,O}}
+					+ x_{AB} \right) \\
+		-\lambda p_B & = \left( \frac{2 x_B p_{n,B}^2}{p_{n,B}^2 + 2p_{n,B}p_{n,O}}
+					+ \frac{ x_B p_{n,B}p_{n,O}}{p_{n,B}^2 + 2p_{n,B}p_{n,O}}
+					+ x_{AB} \right) \\
+		-\lambda p_O & = \left( \frac{ x_A p_{n,A}p_{n,O}}{p_{n,A}^2 + 2p_{n,A}p_{n,O}}
+					+ \frac{ x_B p_{n,B}p_{n,O}}{p_{n,B}^2 + 2p_{n,B}p_{n,O}}
+					+ 2 x_O \right) .
+		\label{eqn:abo_par_zero}
+	\end{split}
+\end{equation}
+Summing all the equations above, we find
+\begin{equation}
+	-\lambda  = {2 (x_A + x_B + x_{AB} + x_{O}) \over p_A + p_B + p_C}.
+\end{equation}
+Substitute $-\lambda$ into Equation \eqref{eqn:abo_par_zero}, we find that the following update
+satisfies the constraints
+\begin{equation}
+	\begin{split}
+ 		p_{n+1,A} & = \frac{2x_{nA/A}+x_{nA/O}+x_{AB}}{2x} \\
+ 		p_{n+1,B} & = \frac{2x_{nB/B}+x_{nB/O}+x_{AB}}{2x} \\
+ 		p_{n+1,O} & = \frac{x_{nA/O}+x_{nB/O}+2x_O}{2x} .
+ 	\end{split}
+\end{equation}
+This problem is similar to gene counting problems. In traditional gene counting problems, there are
+two alleles and three different genotypes. But in this problem, there are three alleles and four
+different blood types. Julia code and results for the first 5 iterations (starting with
+$p_A = p_B = p_C = 1/3$) is attached.
+
+\begin{verbatim}
+# data
+xa = 186;
+xb = 38;
+xab = 13;
+xo = 284;
+
+# initialization
+pa = 1/3;
+pb = 1/3;
+po = 1/3;
+
+# update
+for i=1:10
+    x = xa+xb+xab+xo;
+    xnaa = xa*(pa*pa)/(pa*pa+2*pa*po);
+    xnao = xa*(2*pa*po)/(pa*pa+2*pa*po);
+    xnbb = xb*(pb*pb)/(pb*pb+2*pb*po);
+    xnbo = xb*(2*pb*po)/(pb*pb+2*pb*po);
+    pa_tmp = (2*xnaa+xnao+xab)/(2*x);
+    pb_tmp = (2*xnbb+xnbo+xab)/(2*x);
+    po_tmp = (xnao+xnbo+2*xo)/(2*x);
+    pa = pa_tmp;
+    pb = pb_tmp;
+    po = po_tmp;
+    println(i, " ", pa, " ", pb, " ", po);
+end
+\end{verbatim}
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{| l | l | l | l |}
+		\hline
+		$n$ & $p_A$ & $p_B$ & $p_O$ \\ \hline
+		0 & 0.3333 & 0.3333 & 0.3333 \\ \hline
+		1 & 0.2185 & 0.0505 & 0.7311 \\ \hline
+		2 & 0.2142 & 0.0502 & 0.7357 \\ \hline
+		3 & 0.2137 & 0.0501 & 0.7362 \\ \hline
+		4 & 0.2136 & 0.0501 & 0.7363 \\ \hline
+		5 & 0.2136 & 0.0501 & 0.7363 \\ \hline
+	\end{tabular}
+\end{table}
+
+%-----------------------------------------------------------------------------
+\section*{Problem 1.14}
+
+To find the optimal $\mb{p}$, we maximize $\ln f(\mb{f})$, with the constraint
+$\sum_{i=1}^m p_i = 1$ and $p_i \ge 0$. If we initialize $\mb{p}$
+with non-negative values and each update does not make any $p_i$
+negative, then we can consider only the equality constraint.
+Thus, we arrive at the Lagrangian 
+\begin{equation}
+	\mathcal{L}(\mb{p}, \lambda)
+	= \ln \left(\sum_{i=1}^m \sum_{j=1}^m w_{ij}p_ip_j \right)
+	+ \lambda \sum_{i=1}^m p_i - \lambda .
+\end{equation}
+By (1.3) we find a surrogate function $g(\mb{p}|\mb{p}_n)$ for $\mathcal{L}(\mb{p}, \lambda)$
+\begin{align}
+	\begin{split}
+	& \ln \left(\sum_{i=1}^m \sum_{j=1}^m w_{ij}p_ip_j \right)
+	  + \lambda \sum_{i=1}^m p_i - \lambda \\
+	& \ge \sum_{i=1}^m\sum_{j=1}^m {
+			{ {w_{ij}p_{n,i}p_{n,j}} \over f(\mb{p}_n) }
+			\ln \left({ f(\mb{p}_n) \over {w_{ij}p_{n,i}p_{n,j}} } w_i p_i p_j \right)}
+		   + \lambda \sum_{i=1}^m p_i - \lambda \\
+	& = \sum_{i=1}^m\sum_{j=1}^m {
+			{ {w_{ij}p_{n,i}p_{n,j}} \over f(\mb{p}_n) } \ln p_i}
+		+ \sum_{i=1}^m\sum_{j=1}^m {
+			{ {w_{ij}p_{n,i}p_{n,j}} \over f(\mb{p}_n) } \ln p_j}
+		   + \lambda \sum_{i=1}^m p_i - \lambda + c_n ,
+	\end{split}
+\end{align}
+where $c_n$ is a variable dependent only on $w_{ij}$ and $\mb{p}_n$.
+Take the partial derivative of $g$ with
+respect to $p_k$, we get
+\begin{align}
+	\begin{split}
+	{\partial g \over \partial p_k}
+	& = {1 \over p_k} \sum_{j=1}^m { {w_{kj}p_{n,k}p_{n,j}} \over f(\mb{p}_n) }
+	+ {1 \over p_k} \sum_{i=1}^m { {w_{ik}p_{n,i}p_{n,k}} \over f(\mb{p}_n) }
+	+ \lambda \\
+	& = {2 \over p_k} \sum_{j=1}^m { {w_{kj}p_{nk}p_{nj}} \over f(\mb{p}_n) }
+	+ \lambda ,
+	\end{split}
+\end{align}
+where the last equality follows because $w_{ij} = w_{ji}$.
+Set the partial derivative
+${\partial g \over \partial p_k}$ to 0, we get
+\begin{align}
+	\begin{split}
+	& 0 = {2 \over p_k} \sum_{j=1}^m { {w_{kj}p_{nk}p_{nj}} \over f(\mb{p}_n) }+\lambda \\
+	& \lambda p_k = -2 \sum_{j=1}^m { {w_{kj}p_{nk}p_{nj}} \over f(\mb{p}_n) } \\
+	& \sum_{j=1}^m { {w_{kj}p_{nk}p_{nj}} \over f(\mb{p}_n) } = { -\lambda p_k \over 2} .
+	\end{split}
+	\label{eqn:par_zero}
+\end{align}
+Sum over $k$ on both sides, we get
+\begin{align}
+	\begin{split}
+	& \lambda \sum_{k=1}^m p_k = -2 \\
+	& \lambda = {-2 \over \sum_{k=1}^m p_k} .
+	\end{split}
+\end{align}
+Substitute $\lambda$ into Equation \eqref{eqn:par_zero}, 
+and change indexing from $k$ to $i$, we get
+\begin{equation}
+	\frac{\sum_{j=1}^m w_{ij}p_{n,i}p_{n,j}}
+	     {\sum_{i=1}^m\sum_{j=1}^m w_{ij}p_{n,i}p_{n,j}}
+	= {p_i \over \sum_{i=1}^m p_i} .
+\end{equation}
+The update
+\begin{equation}
+	p_{n+1,i} = \frac{\sum_{j=1}^m w_{ij}p_{n,i}p_{n,j}}
+	     {\sum_{i=1}^m\sum_{j=1}^m w_{ij}p_{n,i}p_{n,j}}
+	    = \frac{p_{n,i}\sum_{j=1}^m w_{ij}p_{n,j}}
+	     {f(\mb{p}_n)}
+\end{equation}
+clearly satisfies the constraint $\sum_{i=1}^m p_i = 1$,
+$p_i \ge 0$, and makes $\lambda = -2$.
+The update of the MM algorithm also guarantees to increase fitness without
+imposing extra assumptions.
+
+%-----------------------------------------------------------------------------
+\section*{Problem 1.15}
+The likelihood of the data is
+\begin{equation}
+	L(\theta) = \prod_{i=1}^m \frac{c_{x_i}\theta^{x_i}}{q(\theta)}
+	= \prod_{i=1}^m \frac{c_{x_i}\theta^{x_i}}{\sum_{k=0}^{\infty} c_k \theta^k}
+\end{equation}
+Taking the logarithm, we get
+\begin{equation}
+	\begin{split}	
+	\ln L(\theta) & = \sum_{i=1}^m \left[ \ln \left( c_{x_i}\theta^{x_i} \right) 
+					-\ln \left( \sum_{k=0}^{\infty} c_k \theta^k \right) \right] \\
+	& = -m \ln q(\theta) + \sum_{i=1}^m x_i \ln \theta + c ,
+	\end{split}	
+\end{equation}
+where $c$ is a constant dependent only on the coefficients $c_k$.
+Because of the log-concavity of $q(\theta)$, we have the inequality
+\begin{equation}
+\ln q(\theta)
+\le \ln q(\theta_n) + {q'(\theta_n) \over q(\theta_n)} (\theta-\theta_n)
+\end{equation}
+which implies the minorization
+\begin{equation}
+g(\theta | \theta_n) 
+= -m \ln q(\theta_n) - m{q'(\theta_n) \over q(\theta_n)} (\theta-\theta_n)
+  + \sum_{i=1}^m x_i \ln \theta + c .
+\end{equation}
+The derivative of $g$ with respect to $\theta$ is
+\begin{equation}
+	{d g \over {d \theta}}
+	= - m{q'(\theta_n) \over q(\theta_n)} + {1 \over \theta} \sum_{i=1}^m x_i .
+\end{equation}
+Set the derivative to 0, and solve for $\theta$ gives the update
+\begin{equation}
+	\theta_{n+1} = { \bar{x} q(\theta_n) \over q'(\theta_n)}
+\end{equation}
+Because the update keeps the parameter positive, one can start with any positive
+$\theta_0$ to keep $\theta_{n+1}$ positive. 
+
+%-----------------------------------------------------------------------------
+\section*{Problem 1.17}
+
+First, we find the density of $X$,
+\begin{equation}
+	\begin{split}
+		\Pr(X=x|\lambda)
+			& = {\lambda^x \over x!} e^{-\lambda} \\
+		\Pr(\Lambda = \lambda | \alpha, \beta)
+			& = {\beta^\alpha \over \Gamma(\alpha)} \lambda^{\alpha-1}e^{-\beta\lambda} \\
+		\Pr(X=x)
+			& = \int \Pr(X=x|\lambda) \Pr(\Lambda = \lambda | \alpha, \beta) d\lambda \\
+			& = \int e^{-\lambda} {\lambda^x \over x!} {\beta^\alpha \lambda^{\alpha-1} \over \Gamma(\alpha)}
+				e^{-\beta\lambda} d\lambda \\
+			& = {\beta^\alpha \over { x! \Gamma(\alpha) }}
+			    \int e^{-\lambda(1+\beta)} \lambda^{[(x+\alpha)-1]} d\lambda
+	\end{split}
+\end{equation}
+Let $u = \lambda(1+\beta)$, then $\lambda = u/(1+\beta)$, and $d\lambda = du/(1+\beta)$.
+Then the integral
+\begin{equation}
+\begin{split}
+\int e^{-\lambda(1+\beta)} \lambda^{[(x+\alpha)-1]} d\lambda
+& = {1 \over (1+\beta)^{x+\alpha}} \int e^{-u} u^{[(x+\alpha)-1]} d\lambda \\
+& = {\Gamma(x+\alpha) \over {(1+\beta)^{x+\alpha}}} ,
+\end{split}
+\end{equation}
+And we conclude with
+\begin{equation}
+\Pr(X=x) = {\beta^\alpha \Gamma(x+\alpha) \over {\Gamma(\alpha)(1+\beta)^{x+\alpha}}x!} .
+\end{equation}
+
+To find mean of $X$,
+
+\begin{equation}
+	\E[X] = {\beta^\alpha \over \Gamma(\alpha)}
+	        \sum_{x = 0}^{\infty} \frac{\Gamma(x+\alpha)}{(1+\beta)^{x+\alpha}(x-1)!}
+\end{equation}
+
+The rest of this problem is unfinished.
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 1.18}
+
+First, notice that
+\begin{align}
+	\begin{split}
+	& 3[(x-x_n)^2+(y-y_n)^2+(z-z_n)^2] \\
+	& = \|(1, 1, -1)\|^2\|(x-x_n, y-y_n, z-z_n)\|^2 .
+	\end{split}
+\end{align}
+By Cauchy-Schwarz inequality
+\begin{align}
+	\begin{split}
+	& \|(1, 1, -1)\|^2\|(x-x_n, y-y_n, z-z_n)\|^2   \\
+	& \ge \|(1, 1, -1)^*(x-x_n, y-y_n, z-z_n)\|^2   \\
+	& = [(x-x_n) + (y-y_n) - (z-z_n)]^2 .
+	\end{split}
+\end{align}
+Therefore,
+\begin{align}
+	\begin{split}
+	& 3[(x-x_n)^2+(y-y_n)^2+(z-z_n)^2]-(x_n+y_n-z_n)^2+2(x_n+y_n-z_n)(x+y-z) \\
+	& \ge [(x-x_n)+(y-y_n)-(z-z_n)]^2-(x_n+y_n-z_n)^2+2(x_n+y_n-z_n)(x+y-z) \\
+	& = (x-2x_n+y-2y_n-z+2z_n)(x+y-z)+2(x_n+y_n-z_n)(x+y-z) \\
+	& = [(x+y-z)-2(x_n+y_n-z_n)](x+y-z)]+2(x_n+y_n-z_n)(x+y-z) \\
+	& = (x+y-z)^2-2(x_n+y_n-z_n)(x+y-z)+2(x_n+y_n-z_n)(x+y-z) \\
+	& = (x+y-z)^2 .
+	\end{split}
+\end{align}
+To show tangency property, plug in $x=x_n, \; y=y_n, \; z=z_n$ on both sides.
+On both sides we get $(x_n+y_n-z_n)^2$.
+Therefore, the right hand side of the inequality is a majorization of the
+left hand side.
+
+\end{document}

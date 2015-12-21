@@ -1,0 +1,569 @@
+\documentclass{scrartcl}
+\usepackage{etoolbox}
+\usepackage{bbm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathabx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\pagestyle{fancy}
+\usepackage{subcaption}
+\setlength{\parskip}{0em}
+\setlength{\parindent}{2em}
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+
+
+
+
+%-----------------------------------------------------------------------------
+% header
+\lhead{Huwenbo Shi (603-778-363) shihuwenbo@ucla.edu}
+
+% title
+\newcommand*{\TitleFont}{
+      \usefont{\encodingdefault}{\rmdefault}{b}{n}
+      \fontsize{16}{20}
+      \selectfont}
+\newcommand*{\AuthorFont}{
+      \usefont{\encodingdefault}{\rmdefault}{r}{n}
+      \fontsize{12}{20}
+      \selectfont}
+\title{\TitleFont Biomath 210 Homework 3}
+\author{\AuthorFont Huwenbo Shi (603-778-363) shihuwenbo@ucla.edu}
+\maketitle
+
+\newcommand*{\argmin}{\operatornamewithlimits{argmin}\limits}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\dom}{\mathrm{dom}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\epi}{\mathrm{epi}}
+\def\mb#1{\mathbf{#1}}
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 4.12}
+
+Finding the spectral norm $\|\mb{M}\|$ of a matrix $\mb{M}$ is equivalent
+to solving the problem
+\begin{align}
+\begin{split}
+& \text{maximize\;\;\;} \mathbf{v}^*\mb{M}^*\mb{M}\mathbf{v} \\
+& \text{s.t. \;\;\;\;\;\;\;\;\;\;\;\;} \mathbf{v}^*\mathbf{v} = 1 .
+\end{split}
+\end{align}
+Finding the Lagrangian of the problem above, we get
+\begin{equation}
+	\mathcal{L}(\mb{v})
+	= \mathbf{v}^*\mb{M}^*\mb{M}\mathbf{v}
+	+\lambda \mathbf{v}^*\mathbf{v} - \lambda, 
+\end{equation}
+which has the Lagrangian
+\begin{equation}
+	\nabla \mathcal{L}(\mb{v})
+	= 2\mb{M}^*\mb{M} \mb{v} + 2\lambda \mb{v} .
+\end{equation}
+Setting the gradient to 0, we arrive at the following condition for a
+stationary point
+\begin{equation}
+	\mb{M}^*\mb{M} \mb{v} = -\lambda \mb{v} .
+\end{equation}
+When $-\lambda = \rho(\mb{M}^*\mb{M})$, the largest eigenvalue of
+$\mb{M}^*\mb{M}$, and $\mb{v}$, the corresponding normalized eigenvector,
+the above equality is satisfied. Because $\mb{x}^*\mb{M}^*\mb{M}\mb{x}\ge 0$
+for all $\mb{x}$, $\mb{M}^*\mb{M}$ is positive semi-definite,
+and $\rho(\mb{M}^*\mb{M}) \ge 0$. Therefore,
+\begin{equation}
+	\|\mb{M}\| = \sqrt{\mathbf{v}^*\mb{M}^*\mb{M}\mathbf{v}}
+	= \sqrt{\mathbf{v}^*\rho(\mb{M}^*\mb{M})\mb{v}}
+	= \sqrt{\rho(\mb{M}^*\mb{M})}.
+\label{eqn:norm_m}
+\end{equation}
+Similarly, we can show that
+\begin{equation}
+	\|\mb{M}^*\mb{M}\| = \sqrt{\rho((\mb{M}^*\mb{M})^*\mb{M}^*\mb{M})}
+	= \sqrt{\rho(\mb{M}^*\mb{M}\mb{M}^*\mb{M})}.
+\end{equation}
+Let $\mb{M}^*\mb{M} = \mb{Q}\mb{\Lambda}\mb{Q}^*$ be the eigen-decomposition
+of $\mb{M}^*\mb{M}$, where $\mb{Q}$ is a unitary matrix and $\mb{\Lambda}$
+is a diagonal matrix containing the eigenvalues of $\mb{M}^*\mb{M}$. Then,
+\begin{equation}
+	(\mb{M}^*\mb{M})(\mb{M}^*\mb{M})
+	= \mb{Q}\mb{\Lambda}\mb{Q}^*\mb{Q}\mb{\Lambda}\mb{Q}^*
+	= \mb{Q}\mb{\Lambda}^2\mb{Q}^* ,
+\end{equation}
+from which we obtain
+\begin{equation}
+	\|\mb{M}^*\mb{M}\|
+	= \sqrt{\rho(\mb{M}^*\mb{M}\mb{M}^*\mb{M})}
+	= \sqrt{\rho(\mb{M}^*\mb{M})^2}
+	= \rho(\mb{M}^*\mb{M})
+\label{eqn:norm_mm}
+\end{equation}
+From Equation \eqref{eqn:norm_m} and \eqref{eqn:norm_mm}, we conclude
+\begin{equation}
+\|\mb{M}\|^2 = \|\mb{M}^*\mb{M}\| .
+\end{equation}
+
+To prove the inequality, let $\mb{v}$ be the eigenvector corresponding to
+the largest eigenvalue, $\rho(\mb{M}^*\mb{M})$, of $\mb{M}^*\mb{M}$.
+First, it can be easily shown that for $\mb{M} \in \mathbb{R}^{m\times n}$,
+\begin{equation}
+	\|\mb{M}\|_1 = \max_j \sum_{i=1}^m |x_{ij}|, \;\;
+	\|\mb{M}\|_\infty = \max_i \sum_{j=1}^n |x_{ij}|,
+\end{equation}
+and that $\|\mb{M}^*\|_1 = \|\mb{M}\|_\infty$.
+Then, it follows that
+\begin{equation}
+	\rho(\mb{M}^*\mb{M})\|\mb{v}\|_1
+	= \|\rho(\mb{M}^*\mb{M})\mb{v}\|_1
+	= \|\mb{M}^*\mb{M}\mb{v}\|_1
+	\le \|\mb{M}^*\|_1 \|\mb{M}\|_1\|\mb{v}\|_1,
+\end{equation}
+from which we conclude
+\begin{equation}
+	\begin{split}
+	\rho(\mb{M}^*\mb{M}) & \le \|\mb{M}^*\|_\infty \|\mb{M}\|_1 \\
+	\|\mb{M}\| & \le \sqrt{\|\mb{M}^*\|_\infty \|\mb{M}\|_1}.
+	\end{split}
+\end{equation}
+
+
+
+
+
+
+\section*{Problem 4.16}
+
+When the center $\mb{x}$ of the sphere is fixed, then
+\begin{equation}
+	{\partial f(r, \mb{x}) \over \partial r}
+	= \sum_{i=1}^p 2(\|\mb{y}_i-\mb{x}\|-r) 
+	= - 2pr + \sum_{i=1}^p 2 \|\mb{y}_i-\mb{x}\| . 
+\end{equation}
+Setting the partial derivative to zero and solving for $r$ gives
+\begin{equation}
+	r = {1 \over p} \sum_{i=1}^p \| \mb{y}_i - \mb{x} \|.
+\end{equation}
+
+For $f$ fixed, 
+\begin{equation}
+	\begin{split}
+	f(r, \mb{x})
+	&  = \sum_{i=1}^p
+	\left[ \|\mb{y}_i-\mb{x}\|^2 - 2r \|\mb{y}_i-\mb{x}\| + r^2 \right] \\
+	& = \sum_{i=1}^p
+	\left[ \|\mb{y}_i-\mb{x}\|^2 - 2r \|\mb{y}_i-\mb{x}\| \right] + pr^2
+	\end{split}
+\end{equation}
+By Cauchy-Schwarz inequality, we have
+\begin{equation}
+	(\mb{y}_i-\mb{x}_n)^*(\mb{y}_i-\mb{x})
+	\le \|\mb{y}_i-\mb{x}_n\| \|\mb{y}_i-\mb{x}\|.
+\end{equation}
+Thus,
+\begin{equation}
+	\begin{split}
+	{1 \over \|\mb{y}_i-\mb{x}_n \|}(\mb{y}_i-\mb{x}_n)^*(\mb{y}_i-\mb{x})
+	& \le \|\mb{y}_i-\mb{x}\| \\
+	-2r {1 \over \|\mb{y}_i-\mb{x}_n \|}(\mb{y}_i-\mb{x}_n)^*(\mb{y}_i-\mb{x})
+	& \ge -2r \|\mb{y}_i-\mb{x}\| .
+	\end{split}
+\end{equation}
+And we can conclude that the function
+\begin{equation}
+	g(\mb{x} | \mb{x}_n)
+	= \sum_{i=1}^p \left[ \|\mb{y}_i-\mb{x}\|^2 
+	- 2r {1 \over \|\mb{y}_i-\mb{x}_n \|}(\mb{y}_i-\mb{x}_n)^*(\mb{y}_i-\mb{x}) \right]
+	+ pr^2
+\end{equation}
+majorizes $f(r,\mb{x})$ for $r$ fixed.
+
+Simplifying $g(\mb{x} | \mb{x}_n)$ gives
+\begin{equation}
+	g(\mb{x} | \mb{x}_n)
+	= \sum_{i=1}^p
+	\left[ -2 \mb{x}^*\mb{y}_i + \mb{x}^*\mb{x}
+	+ 2r { {\mb{y}_i-\mb{x}_n} \over {\|\mb{y}_i - \mb{x}_n \|} } \mb{x} \right]
+	+ c,
+\end{equation}
+where $c$ is an irrelevant constant.
+Taking the gradient of $g(\mb{x} | \mb{x}_n)$ with respect to $\mb{x}$, we get
+\begin{equation}
+	\nabla g(\mb{x} | \mb{x}_n)
+	= 2p\mb{x} + 2 \sum_{i=1}^p
+	\left[
+	    -\mb{y}_i + r { {\mb{y}_i-\mb{x}_n} \over {\|\mb{y}_i - \mb{x}_n \|} }
+	\right].
+\end{equation}
+Setting the gradient to 0 and solving for $\mb{x}$ gives the update
+\begin{equation}
+	\mb{x}_{n+1} = {1 \over p}
+	\sum_{i=1}^p
+	\left[
+		\mb{y}_i - r { {\mb{y}_i-\mb{x}_n} \over {\|\mb{y}_i - \mb{x}_n \|} }
+	\right].
+\end{equation}
+
+
+\section*{Problem 4.17}
+
+By the definition of subdifferential,
+\begin{equation}
+\begin{split}
+\partial f(\mb{x}) & = \{\mb{v}: f(\mb{z}) \ge f(\mb{x})+\mb{v}^*(\mb{z}-\mb{x})\} \\
+\partial g(\mb{x}|\mb{x}) & = \{\mb{v}: g(\mb{z}|\mb{x}) \ge g(\mb{x}|\mb{x})+\mb{v}^*(\mb{z}-\mb{x})\}.
+\end{split}
+\end{equation}
+Let $\mb{u} \in \partial f(\mb{x})$, then
+\begin{equation}
+f(\mb{z}) \ge f(\mb{x})+\mb{u}^*(\mb{z}-\mb{x})\}.
+\label{eqn:subdiff_ineq}
+\end{equation}
+Because $g(\mb{y}|\mb{x})$ majorizes $f(\mb{y})$ with anchor point $\mb{x}$,
+we have $g(\mb{z}|\mb{x}) \ge f(\mb{z})$, and $g(\mb{x}|\mb{x}) = f(\mb{x})$.
+Therefore, from inequality \eqref{eqn:subdiff_ineq}, we have
+\begin{equation}
+g(\mb{z}|\mb{x}) \ge g(\mb{x}|\mb{x})+\mb{u}^*(\mb{z}-\mb{x})\}.
+\end{equation}
+Thus, we can conclude $\mb{u} \in \partial g(\mb{x}|\mb{x})$
+and $\partial f(\mb{x}) \subset \partial g(\mb{x}|\mb{x})$.
+
+Let $f(x) = |x|$, and $g(y|x) = |2y|$ be the majorization of $f(x)$ at
+anchor point $x=0$.
+Then $\partial f(0) = [-1, 1]$ and $\partial g(0|0) = [-2, 2]$.
+In this case, we have $\partial f(0) \subset \partial g(0|0)$,
+but $\partial f(0) \ne \partial g(0|0)$.
+
+
+\section*{Problem 4.19}
+
+Since $[y_i-\mu_i(\pmb{\theta})]^2 =
+[y_i-\mu_i(\pmb{\theta}_m)+\mu_i(\pmb{\theta}_m)-\mu_i(\pmb{\theta})]^2$,
+for $w_i \in [0, 1]$ we have
+\begin{equation}
+\begin{split}
+& w_i [y_i-\mu_i(\pmb{\theta})]^2 \\
+& = w_i [y_i-\mu_i(\pmb{\theta}_m)+\mu_i(\pmb{\theta}_m)-\mu_i(\pmb{\theta})]^2 \\
+& = w_i [y_i-\mu_i(\pmb{\theta}_m)]^2 + w_i [\mu_i(\pmb{\theta}_m)-\mu_i(\pmb{\theta})]^2
+    + 2w_i[y_i-\mu_i(\pmb{\theta}_m)][\mu_i(\pmb{\theta}_m)-\mu_i(\pmb{\theta})] \\
+& \le w_i [y_i-\mu_i(\pmb{\theta}_m)]^2 + [\mu_i(\pmb{\theta}_m)-\mu_i(\pmb{\theta})]^2
+    + 2w_i[y_i-\mu_i(\pmb{\theta}_m)][\mu_i(\pmb{\theta}_m)-\mu_i(\pmb{\theta})] \\
+& = w_i [y_i-\mu_i(\pmb{\theta}_m)]^2
++\mu_i(\pmb{\theta}_m)^2 - 2 \mu_i(\pmb{\theta}_m)\mu_i(\pmb{\theta}) + \mu_i(\pmb{\theta})^2 \\
+& \phantom{=}\, + 2w_i[y_i-\mu_i(\pmb{\theta}_m)][\mu_i(\pmb{\theta}_m)-\mu_i(\pmb{\theta})] \\
+& = \mu_i(\pmb{\theta})^2 - 2 \mu_i(\pmb{\theta}_m)\mu_i(\pmb{\theta})
+- 2w_i[y_i-\mu_i(\pmb{\theta}_m)]\mu_i(\pmb{\theta}) \\
+& \phantom{=}\, + w_i [y_i-\mu_i(\pmb{\theta}_m)]^2 + 2w_i[y_i-\mu_i(\pmb{\theta}_m)]\mu_i(\pmb{\theta}_m) +\mu_i(\pmb{\theta}_m)^2 \\
+& = \mu_i(\pmb{\theta})^2
+- 2 [ w_i y_i + (1-w_i) \mu_i(\pmb{\theta}_m) ] \mu_i(\pmb{\theta}) +\mu_i(\pmb{\theta}_m)^2 \\
+& \phantom{=}\, + w_i [y_i-\mu_i(\pmb{\theta}_m)]^2 + 2w_i[y_i-\mu_i(\pmb{\theta}_m)]\mu_i(\pmb{\theta}_m) \\
+& = [w_i y_i + (1-w_i) \mu_i(\pmb{\theta}_m) - \mu_i(\pmb{\theta})]^2
+  - [w_i y_i + (1-w_i) \mu_i(\pmb{\theta}_m)]^2 +\mu_i(\pmb{\theta}_m)^2 \\
+& \phantom{=}\, + w_i [y_i-\mu_i(\pmb{\theta}_m)]^2 + 2w_i[y_i-\mu_i(\pmb{\theta}_m)]\mu_i(\pmb{\theta}_m) \\
+& = [w_i y_i + (1-w_i) \mu_i(\pmb{\theta}_m) - \mu_i(\pmb{\theta})]^2 + c_{i,m}
+\end{split} , 
+\end{equation}
+where 
+\begin{equation}
+\begin{split}
+& c_{i,m} \\
+& = - [w_i y_i + (1-w_i) \mu_i(\pmb{\theta}_m)]^2
+  + w_i [y_i-\mu_i(\pmb{\theta}_m)]^2 \\
+& \phantom{=}\,  + 2w_i[y_i-\mu_i(\pmb{\theta}_m)]\mu_i(\pmb{\theta}_m)
+  +\mu_i(\pmb{\theta}_m)^2 \\
+& = (w_i-w_i^2)y_i^2+(w_i-w_i^2)\mu_i(\pmb{\theta}_m)^2
+-2(w_i-w_i^2)y_i\mu_i(\pmb{\theta}_m) \\
+& = w_i(1-w_i)[y_i-\mu_i(\pmb{\theta}_m)]^2
+\end{split}
+\end{equation}
+The inequality becomes equality when $\pmb{\theta} = \pmb{\theta}_m$. Therefore,
+\begin{equation}
+\begin{split}
+g(\pmb{\theta} | \pmb{\theta}_m)
+& = \sum_i [w_i y_i + (1-w_i) \mu_i(\pmb{\theta}_m)-\mu_i(\pmb{\theta})]^2+c_m \\
+c_m & = \sum_i w_i (1-w_i) [y_i - \mu_i(\pmb{\theta}_m)]^2
+\end{split}
+\end{equation}
+is indeed a majorization of $f(\pmb{\theta})$.
+
+\section*{Problem 4.20}
+
+Let $\theta = \sigma^2$, and
+$f(\theta, \mu) = -{m \over 2} \ln \theta
+- {1 \over {2\theta}} \sum_{i=1}^m (y_i - \mu_n)^2 - \rho |\mu_n|$.
+For $\mu$ fixed, the derivative of $f(\theta, \mu)$ with respect to $\theta$ is
+\begin{equation}
+{d f \over d \theta}
+= -{m \over 2} {1 \over \theta}
++ {1 \over 2} \theta^{-2} \sum_{i=1}^m(y_i-\mu_n)^2.
+\end{equation}
+Setting the derivative to 0 gives the update
+\begin{equation}
+\theta_{n+1} = {1 \over m} \sum_{i=1}^m (y_i - \mu_n)^2.
+\end{equation}
+
+For $\theta$ fixed, the subgradient of $f(\theta, \mu)$ with respect to $\mu$ is
+\begin{equation}
+{d f \over d \mu} = {1 \over \theta_n} \sum_{i=1}^m y_i - {1 \over \theta_n} m \mu - \rho
+\begin{cases}
+	1 & \text{if\;\;} \mu > 0 \\
+	[-1, 1] & \text{if\;\;} \mu = 0 \\
+	-1 & \text{if\;\;} \mu < 0
+\end{cases}.
+\end{equation}
+Setting the derivative to 0, we get
+\begin{equation}
+\mu = {1 \over m} \sum_{i=1}^m y_i -
+\begin{cases}
+	{\rho \theta_n \over m} & \text{if\;\;} \mu > 0 \\
+	[-{\rho \theta_n \over m}, {\rho \theta_n \over m}] & \text{if\;\;} \mu = 0 \\
+	-{\rho \theta_n \over m} & \text{if\;\;} \mu < 0
+\end{cases}.
+\end{equation}
+For $\mu > 0$, we have
+$\mu = {1 \over m} \sum_{i=1}^m y_i - {\rho \theta_n \over m}$
+when ${1 \over m} \sum_{i=1}^m y_i \in ({\rho \theta_n \over m}, +\infty)$. \\
+For $\mu = 0$, we have $0 \in \sum_{i=1}^m y_i - [-{\rho \theta_n \over m}, {\rho \theta_n \over m}]$
+when ${1 \over m}\sum_{i=1}^m y_i \in [-{\rho \theta_n \over m}, {\rho \theta_n \over m}]$. \\
+For $\mu < 0$, we have
+$\mu = {1 \over m} \sum_{i=1}^m y_i + {\rho \theta_n \over m}$
+when ${1 \over m} \sum_{i=1}^m y_i \in (-\infty, -{\rho \theta_n \over m})$.
+
+To summarize, the update for $\mu$ is
+\begin{equation}
+\mu_{n+1} = 
+\begin{cases}
+0 & \text{if \;\;} \sum_{i=1}^m y_i \in [-{\rho \theta_n \over m}, {\rho \theta_n \over m}] \\
+{1 \over m} \sum_{i=1}^m y_i - {\rho \theta_n \over m} & \text{if \;\;}
+{1 \over m} \sum_{i=1}^m y_i \in ({\rho \theta_n \over m}, +\infty) \\
+{1 \over m} \sum_{i=1}^m y_i + {\rho \theta_n \over m} & \text{if \;\;}
+{1 \over m} \sum_{i=1}^m y_i \in (-\infty, -{\rho \theta_n \over m})
+\end{cases}.
+\end{equation}
+
+
+\section*{Problem 4.21}
+
+Python script implementing the coordinate ascent algorithm is attached.
+10,000 data points were drawn from the Gaussian distribution with mean 1.0,
+and variance 100.0.
+The simulated data has sample mean 0.878, and sample variance 99.538.
+$\mu$ and $\sigma^2$ were initialized to be 0.
+10,000 iterations were applied in the coordinate ascent algorithm to ensure convergence.
+6 different $\rho$'s ranging from 0 to 5 were tested.
+Table \ref{tbl:param_est} shows the estimated parameters for different $\rho$.
+The magnitude of $\hat{\mu}$ shrinks as $\rho$ increases. This is because the term
+$\rho|\mu|$ penalizes large $|\mu|$ in the objective.
+
+\begin{verbatim}
+import math
+import numpy as np
+
+# create simulated data
+mu = 1.0
+sigma2 = 100.0
+m = 10000
+data = np.random.normal(mu, math.sqrt(sigma2), m)
+
+# compute sample mean, sample variance
+sample_mean = np.mean(data)
+sample_var = np.var(data)
+print sample_mean, sample_var
+
+# iterate through different rho
+all_rho = [0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
+for rho in all_rho:
+    
+    # estimate mu and sigma2
+    mu_est = 0.0
+    sigma2_est = 0.0
+
+    for i in range(0,10000):
+        sigma2_est = np.sum(np.square(data-mu_est))/m
+        tmp = rho*sigma2_est/m
+        if(sample_mean >= -tmp and sample_mean <= tmp):
+            mu_est = 0.0
+        elif(sample_mean > tmp):
+            mu_est = sample_mean - tmp
+        else:
+            mu_est = sample_mean + tmp
+    
+    # print out result
+    print rho, mu_est, sigma2_est
+\end{verbatim}
+
+\begin{table}[htb]
+        \centering
+        \begin{tabular}{| l | l | l |}
+                \hline
+                $\rho$ & $\hat{\mu}$ & $\hat{\sigma}^2$ \\ \hline
+                0.0 & 0.878 & 99.538 \\ \hline
+                1.0 & 0.868 & 99.538 \\ \hline
+                2.0 & 0.858 & 99.539 \\ \hline
+                3.0 & 0.848 & 99.539 \\ \hline
+                4.0 & 0.838 & 99.540 \\ \hline
+                5.0 & 0.828 & 99.540 \\ \hline
+        \end{tabular}
+        \caption{Estimated $\mu$ and $\sigma^2$ for different $\rho$}
+        \label{tbl:param_est}
+\end{table}
+
+\section*{Problem 4.25}
+
+Let 
+\begin{equation}
+h(\mb{y}) = (f \Box g)(\mb{y})
+= \inf_{\mb{x}+\mb{z}=\mb{y}} [f(\mb{x})+g(\mb{z})].
+\end{equation}
+Then
+\begin{equation}
+	\begin{split}
+		(f \Box g)^*(\mb{y})
+		& = h^*(\mb{y}) \\
+		& = \sup_{\mb{w}} [\mb{w}^*\mb{y}-h(\mb{w})] \\
+		& = \sup_{\mb{w}} \left\lbrace 
+				\mb{w}^*\mb{y}-\inf_{\mb{x}+\mb{z}=\mb{w}} [f(\mb{x})+g(\mb{z})]
+			\right\rbrace \\
+		& = \sup_{\mb{w}} \left\lbrace 
+				\mb{w}^*\mb{y}+\sup_{\mb{x}+\mb{z}=\mb{w}} [-f(\mb{x})-g(\mb{z})]
+			\right\rbrace \\
+		& = \sup_{\mb{w}} \left\lbrace 
+				\sup_{\mb{x}+\mb{z}=\mb{w}} [\mb{w}^*\mb{y}-f(\mb{x})-g(\mb{z})]
+			\right\rbrace \\
+		& = \sup_{\mb{x}} [\mb{x}^*\mb{y}-f(\mb{x})]
+		    + \sup_{\mb{z}} [\mb{z}^*\mb{y}-g(\mb{z})] \\
+		& = f^*(\mb{y})+g^*(\mb{y}).
+	\end{split}
+\end{equation}
+The 6-th equality distributes the constraint $\mb{x}+\mb{z}=\mb{w}$
+into finding the supremum of $\mb{x}^*\mb{y}-f(\mb{x})$ and $\mb{z}^*\mb{y}-g(\mb{z})$
+separately. The sum of $\mb{x}'$ and $\mb{y}'$ at which the supremums are attained forms
+$\mb{w}'$, at which the supremum of $\mb{w}^*\mb{y}-h(\mb{w})$ is attained.
+
+\section*{Problem 4.32}
+
+\begin{equation}
+	\partial f_1(x) =
+	\begin{cases}
+		\{0\} & \text{if \;} x \in [-1,1] \\
+		\{1\} & \text{if \;} x \in (1, 2] \\
+		\{-1\} & \text{if \;} x \in [-2,-1) \\
+		[0, 1] & \text{if \;} x = 1 \\
+		[-1, 0] & \text{if \;} x= -1
+	\end{cases}
+\end{equation}
+
+The function $y = \sqrt{1-x^2}$ defines the top half of a circle with radius 1, as it can be written
+as $y^2 = 1-x^2$ where $y \ge 0$. Therefore, $f_2(x)$ defines the bottom half of a circle with a radius
+1 shifted upward by 1. At $x = 1$ and $x = -1$, the derivative of $f_2(x)$ with respect to $x$ is
+$\infty$ and $-\infty$, respectively. The only supporting hyperplanes at these points are the vertical
+tangent lines. Therefore, $f_2(x)$ is not subdifferentiable at $x=1$ and $x=-1$.
+For $x \in (-1,1)$,
+\begin{equation}
+	{d f_2(x) \over dx} = x(1-x^2)^{-{1 \over 2}}	
+\end{equation}
+
+
+\section*{Problem 4.33}
+
+Let $f(x) = |x|$.
+
+When $x > 0$, $f(x) = x$, then $\partial f(x) = \{1\}$.
+
+When $x < 0$, $f(x) = -x$, then $\partial f(x) = \{-1\}$.
+
+When $x = -x = 0$,
+\begin{equation}
+\partial f(x) = \{\alpha (-1) + (1-\alpha) (1) : \alpha \in [0, 1] \} =  [-1, 1].
+\end{equation}
+
+\section*{Problem 4.34}
+
+Let
+\begin{equation}
+f(\mb{x}) = \| \mb{x} \|_1 = \max \{-x_1-x_2, -x_1+x_2, x_1-x_2, x_1+x_2\}.
+\end{equation}
+
+If $x_1 > 0$ and $x_2 > 0$, $f(\mb{x}) =x_1+x_2 $, and $\partial f(\mb{x}) = \{ (1,1) \}$.
+
+If $x_1 < 0$ and $x_2 < 0$, $f(\mb{x}) = -x_1-x_2$, and $\partial f(\mb{x}) = \{ (-1,-1) \}$.
+
+If $x_1 < 0$ and $x_2 > 0$, $f(\mb{x}) = -x_1+x_2$, and $\partial f(\mb{x}) = \{ (-1,1) \}$.
+
+If $x_1 > 0$ and $x_2 < 0$, $f(\mb{x}) = x_1-x_2$, and $\partial f(\mb{x}) = \{ (1,-1) \}$.
+
+These define the four corner points of the square on $\mathbb{R}^2$.
+
+If $x_1 = 0$ and $x_2 > 0$, for $\alpha \in [0,1]$,
+\begin{equation}
+\partial f(\mb{x}) = \{\alpha (-1,1) + (1-\alpha) (1,1) : \alpha \in [0, 1]\}.
+\end{equation}
+
+Similarly, if $x_1 = 0$ and $x_2 < 0$, $\partial f(\mb{x}) = \{\alpha (-1,-1) + (1-\alpha) (1,-1) : \alpha \in [0, 1]\}$.
+
+If $x_1 > 0$ and $x_2 = 0$, $\partial f(\mb{x}) = \{\alpha (1,-1) + (1-\alpha) (1,1) : \alpha \in [0, 1]\}$.
+
+If $x_1 < 0$ and $x_2 = 0$, $\partial f(\mb{x}) = \{\alpha (-1,-1) + (1-\alpha) (-1,1) : \alpha \in [0, 1]\}$.
+
+These define the four edges of the square.
+
+For $x_1 = x_2 = 0$,
+\begin{equation}
+\partial f(\mb{x}) = \left\lbrace \alpha_1 (-1,-1) + \alpha_2 (-1,1) + \alpha_3(1,-1) + \alpha_4 (1,1):  \alpha_i \ge 0, \sum_i \alpha_i = 1 \right\rbrace.
+\end{equation}
+This defines the entire square.
+
+At $\mb{x} = (0,0)$, $\partial f(\mb{x}) = [-1,1] \times [-1,1]$, which is a square on $\mathbb{R}^2$.
+At $\mb{x} = (1,0)$, $\partial f(\mb{x}) = \{1\} \times [-1,1]$, which is a line segment from $(1,-1)$ to $(1,1)$
+At $\mb{x} = (1,1)$, $\partial f(\mb{x}) = \{1\} \times \{1\}$, which is the point $(1,1)$.
+
+Let
+\begin{equation}
+f(\mb{x}) = \| \mb{x} \|_\infty = \max \{-x_1+ 0 x_2, x_1+ 0 x_2, 0 x_1-x_2,  0 x_1+x_2\}.
+\end{equation}
+
+Following the same reasoning in the previous problem, it can be shown that
+\begin{equation}
+\partial f(\mb{x}) =
+\begin{cases}
+\{ (-1,0)\} \; \text{if\;} |x_1| > |x_2|, x_1 < 0, x_2 \ne 0 \\
+\{ (1,0)\} \; \text{if\;}   |x_1| > |x_2|, x_1 > 0, x_2 \ne 0 \\
+\{ (0,-1)\} \; \text{if\;} |x_1| < |x_2|, x_2 < 0, x_1 \ne 0 \\
+\{ (0,1)\} \; \text{if\;} |x_1| < |x_2|, x_2 > 0, x_1 \ne 0 \\
+\{ \alpha (-1,0) + (1-\alpha) (0, 1) : \alpha \in [0,1] \} \; \text{if\;} |x_1| = |x_2| \ne 0, x_1 < 0, x_2 > 0 \\
+\{ \alpha (-1,0) + (1-\alpha) (0, -1) : \alpha \in [0,1] \} \; \text{if\;} |x_1| = |x_2| \ne 0, x_1 < 0, x_2 < 0 \\
+\{ \alpha (1,0) + (1-\alpha) (0, 1) : \alpha \in [0,1] \} \; \text{if\;} |x_1| = |x_2| \ne 0, x_1 > 0, x_2 > 0 \\
+\{ \alpha (1,0) + (1-\alpha) (0, -1) : \alpha \in [0,1] \} \; \text{if\;} |x_1| = |x_2| \ne 0, x_1 > 0, x_2 < 0 \\
+\left\lbrace 
+    \alpha_1 (-1,0) + \alpha_2 (1,0) + \alpha_3(0,-1) + \alpha_4 (0,1): 
+    \alpha_i \ge 0, \sum_i \alpha_i = 1
+\right\rbrace \; \text{if\;} x_1 = x_2 = 0
+\end{cases} .
+\end{equation}
+In summary, the first four points define the corner points of the diamond on $\mathbb{R}^2$.
+The next four set define the four edges of the diamond.
+The last set is the convex hull of the four corner points, and defines the entire diamond.
+At $\mb{x} = (0,0)$,
+\begin{equation}
+\partial f(\mb{x}) = 
+\left\lbrace 
+    \alpha_1 (-1,0) + \alpha_2 (1,0) + \alpha_3(0,-1) + \alpha_4 (0,1): 
+    \alpha_i \ge 0, \sum_i \alpha_i = 1
+\right\rbrace
+\end{equation}
+which is a diamond on $\mathbb{R}^2$.
+At $\mb{x} = (1,0)$, $\partial f(\mb{x}) =\{ (1,0)\}$, which is a corner point of the diamond.
+At $\mb{x} = (1,1)$,
+\begin{equation}
+\partial f(\mb{x}) = \{ \alpha (1,0) + (1-\alpha) (0, 1) : \alpha \in [0,1] \},
+\end{equation}
+which is an edge of the diamond.
+
+\end{document}

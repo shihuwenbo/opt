@@ -1,0 +1,390 @@
+\documentclass{scrartcl}
+\usepackage{etoolbox}
+\usepackage{bbm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathabx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage{fixltx2e}
+\pagestyle{fancy}
+\usepackage{subcaption}
+\setlength{\parskip}{0em}
+\setlength{\parindent}{2em}
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+
+
+
+
+%-----------------------------------------------------------------------------
+% header
+\lhead{Huwenbo Shi (603-778-363) shihuwenbo@ucla.edu}
+
+% title
+\newcommand*{\TitleFont}{
+      \usefont{\encodingdefault}{\rmdefault}{b}{n}
+      \fontsize{16}{20}
+      \selectfont}
+\newcommand*{\AuthorFont}{
+      \usefont{\encodingdefault}{\rmdefault}{r}{n}
+      \fontsize{12}{20}
+      \selectfont}
+\title{\TitleFont Biomath 210 Homework 6}
+\author{\AuthorFont Huwenbo Shi (603-778-363) shihuwenbo@ucla.edu}
+\maketitle
+
+\newcommand*{\argmin}{\operatornamewithlimits{argmin}\limits}
+\newcommand*{\argmax}{\operatornamewithlimits{argmax}\limits}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\dom}{\mathrm{dom}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\prox}{\mathrm{prox}}
+\newcommand{\epi}{\mathrm{epi}}
+\def\mb#1{\mathbf{#1}}
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 7.1}
+
+To prove the first equality, we notice that
+\begin{equation}
+\begin{split}
+f \circ P_C (\mb{y}+t\mb{v}) - f \circ P_C(\mb{y})
+& = s_{f}[P_C(\mb{y}+t\mb{v}), P_C(\mb{y})] [P_C(\mb{y}+t\mb{v}) - P_C(\mb{y})] \\
+& = s_{f}[P_C(\mb{y}+t\mb{v}), P_C(\mb{y})] s_{P_C}(\mb{y}+t\mb{v}, \mb{y}) t\mb{v},
+\end{split}7
+\end{equation}
+which implies
+\begin{equation}
+{{f \circ P_C (\mb{y}+t\mb{v}) - f \circ P_C(\mb{y})} \over t }
+= s_{f}[P_C(\mb{y}+t\mb{v}), P_C(\mb{y})] s_{P_C}(\mb{y}+t\mb{v}, \mb{y}) \mb{v}.
+\label{eqn:derv_def}
+\end{equation}
+Sending $t$ to 0, yields
+$d_{\mb{v}} f \circ P_C(\mb{y}) = df (P_C(\mb{y})) d{P_C}(\mb{y}) \mb{v} = df (P_C(\mb{y})) d_{\mb{v}}{P_C}(\mb{y})$.
+For the boundary point $\mb{y}$, $P_C(\mb{y}) = \mb{y}$, therefore, we have  
+\begin{equation}
+d_{\mb{v}} f \circ P_C(\mb{y}) = df (\mb{y}) d_{\mb{v}}{P_C}(\mb{y}) = -\mb{g}^*d_{\mb{v}}{P_C}(\mb{y}).
+\end{equation}
+
+To prove the second equality, we show that $d_{\mb{v}}{P_C}(\mb{y}) = P_T(\mb{v})$. From Equation (3.5) of chapter 3, and Equation (7.8) of appendix, we know that
+\begin{equation}
+d_\mb{v} \text{dist}(\mb{y}, C) = \|\mb{v}-d_\mb{v}P_C(\mb{y})\| = \text{dist}(\mb{v}, T) = \inf_{\mb{z} \in T} \|\mb{v} - \mb{z}\| = \|\mb{v} - P_T(\mb{v})\|.
+\end{equation}
+Therefore, $d_{\mb{v}}{P_C}(\mb{y}) = P_T(\mb{v})$. And we conclude that
+\begin{equation}
+d_{\mb{v}} f \circ P_C(\mb{y}) = df (\mb{y}) d_{\mb{v}}{P_C}(\mb{y}) = -\mb{g}^*d_{\mb{v}}{P_C}(\mb{y}) = -\mb{g}^*P_T(\mb{v}).
+\end{equation}
+
+From proposition 5.2.4, $\mb{g} = P_T(\mb{g}) + P_{T^{\circ}}(\mb{g})$. Therefore,
+$d_{\mb{v}} f \circ P_C(\mb{y}) = -P_T(\mb{g})^*P_T(\mb{v}) - P_{T^{\circ}}(\mb{g})^*P_T(\mb{v})$. Restricting $t \ge 0$ in Equation \eqref{eqn:derv_def},
+if $f(P_C(\mb{y}+t\mb{v})) < f(P_C(\mb{y}))$, then $f(P_C(\mb{y}+t\mb{v})) - f(P_C(\mb{y})) < 0$ and $d_{\mb{v}} f \circ P_C(\mb{y}) < 0$.
+On the other hand, if $d_{\mb{v}} f \circ P_C(\mb{y}) < 0$, we have $f(P_C(\mb{y}+t\mb{v})) < f(P_C(\mb{y}))$. Thus,
+$-P_T(\mb{g})^*P_T(\mb{v}) - P_{T^{\circ}}(\mb{g})^*P_T(\mb{v})$ is necessary and sufficient for $\mb{v}$ to be a descent direction.
+
+When $\mb{g} = \mb{v}$, we have
+\begin{equation}
+\begin{split}
+d_{\mb{v}} f \circ P_C(\mb{y}) & = -P_T(\mb{v})^*P_T(\mb{v}) - P_{T^{\circ}}(\mb{v})^*P_T(\mb{v}) \\
+                               & = -P_T(\mb{v})^*P_T(\mb{v}) = -\mb{v}^*P_T(\mb{v}),
+\end{split}
+\end{equation}
+which implies $[P_T(\mb{v})-\mb{v}]^*P_T(\mb{v}) = 0$. Since $\mb{v}$ is arbitrary, $P_T(\mb{v})$ must be $\mb{0}$ for the equality to hold.
+
+When $\mb{g} \in T^{\circ}$, we have $\mb{g} = P_{T^\circ}(\mb{g})$, which entails $-P_T(\mb{g})^*P_T(\mb{v}) - \mb{g}^*P_T(\mb{v}) = -\mb{g}^*P_T(\mb{v})$
+and $-P_T(\mb{g})^*P_T(\mb{v}) = 0$. Since $\mb{g}$ is arbitrary, $P_T(\mb{v})$ must be $\mb{0}$. When $P_T(\mb{v}) = \mb{0}$, we have
+$\mb{g} = P_T(\mb{g}) + P_{T^{\circ}}(\mb{g}) = P_T(\mb{v}) + P_{T^{\circ}}(\mb{g}) = P_{T^{\circ}}(\mb{g})$. Therefore, $\mb{g} \in T^{\circ}$.
+
+%-------------------------------------------------------------------
+
+\section*{Problem 7.2}
+
+We first derive the semidifferential of $P_S(\mb{x})$. We note that
+\begin{equation}
+\begin{split}
+{{ P_S(\mb{x}+t\mb{v}) - P_S(\mb{x}) } \over t} = s_{P_S}(\mb{x}+t\mb{v}, \mb{x})\mb{v}.
+\end{split}
+\end{equation}
+Since $\mb{x} \in S$, we have $P_S(\mb{x}) = \mb{x}$. For $t$ approaching 0, i.e. the perturbation in $\mb{x}$ by $t\mb{v}$ doesn't change the relative rank order
+of magnitude of $\mb{x}_i$, we have
+\begin{equation}
+P_S(\mb{x}+t\mb{v})_i = \begin{cases}
+                            \mb{x}_i + t\mb{v}_i & \text{if\;} \mb{x}_i \neq 0 \\
+                            0                    & \text{if\;} \mb{x}_i = 0
+                        \end{cases}
+\end{equation}
+Therefore,
+\begin{equation}
+{{ P_S(\mb{x}+t\mb{v}) - P_S(\mb{x}) } \over t} =
+\begin{cases}
+    \mb{v}_i & \text{if\;} \mb{x}_i \neq 0 \\
+    0        & \text{if\;} \mb{x}_i = 0
+\end{cases}
+\end{equation}
+Sending $t$ to 0, yields the conclusion stated in the problem.
+
+For the second part of the problem, from problem 7.1 we know that
+\begin{equation}
+    d_{\mb{v}} f \circ P_S(\mb{y}) = \nabla f(\mb{y})^* d_{\mb{v}}P_S(\mb{y}) = \sum_{\mb{y}_i \neq 0} \nabla f(\mb{y})_i d_{\mb{v}}P_S(\mb{y})_i.
+\end{equation}
+For $\mb{v} = -\nabla f(\mb{y})$, we have
+\begin{equation}
+    d_{\mb{v}} f \circ P_S(\mb{y}) = -\sum_{\mb{x}_i \neq 0} {\partial \over {\partial \mb{y}_i}} f(\mb{y})^2 < 0,
+\end{equation}
+unless ${\partial \over {\partial \mb{y}_i}} f(\mb{y}) = 0$ for all $\mb{y}_i \neq 0$.
+
+For the third part of the problem, we prove by finding counterexample,
+\begin{equation}
+d_{-\mb{A}\mb{u}} f \circ P_S(\mb{x}) = \mb{u}^* d_{-\mb{A}\mb{u}}P_S[(1,0)] = \mb{u}^*(-[\mb{A}\mb{u}]_1, 0) = -(1- 4/3) = {1 \over 3}.
+\end{equation}
+
+
+%------------------------------------------------------------------
+
+\section*{Problem 7.6}
+
+From (7.1), we know that
+\begin{equation}
+\|\mb{M}\|_\dagger = \|\mb{U}\mb{D}\mb{U}^{-1}\|_\dagger = \|\mb{U}^{-1}(\mb{U}\mb{D}\mb{U}^{-1})\mb{U}\|_\dagger = \|\mb{D}\|_\dagger.
+\end{equation}
+We find $\|\mb{D}\|_\dagger$ by
+\begin{equation}
+    \|\mb{D}\|_\dagger = \sup_{\|\mb{x}\|_\dagger = 1} \|\mb{D} \mb{x}\|_\dagger.
+\end{equation}
+Here, $\mb{D} = \mb{I}\mb{D}\mb{I}$ and $\mb{u}_i = \mb{e}_i$. The optimal $\mb{x}$ satisfies $\mb{x}_j = 1$ where $|d_j|$ is largest and $0$ else where.
+And we note that $\mb{D}\mb{x} = d_j \mb{e}_j$, thus $\|\mb{M}\|_\dagger = \|\mb{D}\|_\dagger = \|\mb{D}\mb{x}\|_\dagger = \max_{1 \le i \le n} |d_i|$.
+
+To show contraction, we notice that
+\begin{equation}
+    \|\mb{M}\mb{x} + \mb{v} - (\mb{M}\mb{y} + \mb{v})\|_\dagger = \|\mb{M}(\mb{x} - \mb{y}) \|_\dagger \le \|\mb{M}\|_\dagger \|\mb{x}-\mb{y}\|.
+\end{equation}
+For $\mb{M}$ with spectral radius strictly less than 1, we have $\|\mb{M}\mb{x} + \mb{v} - (\mb{M}\mb{y} + \mb{v})\|_\dagger < \|\mb{x}-\mb{y}\|$.
+
+The fixed point of the map satisfies $\mb{x} = \mb{M}\mb{x} + \mb{v}$. And therefore the fixed point satisfies $\mb{x} = -(\mb{M}-\mb{I})^{-1}\mb{v}$.
+
+%------------------------------------------------------------------
+
+\section*{Problem 7.10}
+
+From the obtuse angle criterion, we have the in equality
+\begin{equation}
+\left[ \mb{x}_n - {\rho \over L} \nabla f(\mb{x}_n) - \mb{x}_{n+1} \right]^*[\mb{x}_{n} - \mb{x}_{n+1}] \le 0.
+\end{equation}
+Rearranging the inequality gives
+\begin{equation}
+\begin{split}
+& \|\mb{x}_n - \mb{x}_{n+1}\|^2 - {\rho \over L} df(\mb{x}_n)(\mb{x}_n - \mb{x}_{n+1}) \le 0 \\
+& \|\mb{x}_n - \mb{x}_{n+1}\|^2 \le -{\rho \over L} df(\mb{x}_n)(\mb{x}_{n+1} - \mb{x}_{n}) \\
+& df(\mb{x}_n)(\mb{x}_{n+1} - \mb{x}_{n}) \le -{L \over \rho} \|\mb{x}_{n+1} - \mb{x}_{n}\|^2.
+\end{split}
+\end{equation}
+
+Following the steps in solution to \textbf{Problem 7.22} (see Equation \ref{eqn:cauchy_22} to \ref{eqn:qua_ub_22}), we arrive at the inequality based on quadratic
+upper bound majorization
+\begin{equation}
+    \begin{split}
+        f(\mb{x}_{n+1}) & \le f(\mb{x}_n) + df(\mb{x}_n)(\mb{x}_{n+1}-\mb{x}_n)+{L \over 2} \|\mb{x}_{n+1} - \mb{x}_n\|^2 \\
+                        & \le f(\mb{x}_n) - {L \over \rho} \|\mb{x}_{n+1} - \mb{x}_{n}\|^2 +{L \over 2} \|\mb{x}_{n+1} - \mb{x}_n\|^2 \\
+                        & = f(\mb{x}_n) - \left[ {L \over \rho} - {L \over 2} \right] \|\mb{x}_{n+1} - \mb{x}_n\|^2 .
+    \end{split}
+\end{equation}
+
+For $f(\mb{x})$ continuous, when $f(\mb{x})$ is coercive or $S$ is compact, the minimum of $f(\mb{x})$ is attained. Since the sequence $f(\mb{x}_n)$ is monotonically
+decreasing, the limit $\lim_{n \rightarrow \infty} f(\mb{x}_n)$ exists. To show that $\lim_{n \rightarrow \infty} \|\mb{x}_{n+1}-\mb{x}_n\| = 0$, we notice that
+\begin{equation}
+   0 \le \|\mb{x}_{n+1}-\mb{x}_n\|^2 \le -{ {f(\mb{x}_{n+1})-f(\mb{x}_{n})} \over {L/\rho - L/2}}.
+\end{equation}
+As $n$ approaches $\infty$, we have $0 \le \|\mb{x}_{n+1}-\mb{x}_n\|^2 \le 0$, which implies $\|\mb{x}_{n+1}-\mb{x}_n\|^2 = 0$.
+Thus, $\lim_{n \rightarrow \infty} \|\mb{x}_{n+1}-\mb{x}_n\| = 0$ holds.
+
+For the no-progress point $\mb{y}$, we have the obtuse angle criterion
+\begin{equation}
+\left[ \mb{y} - {\rho \over L} \nabla f(\mb{y}) - \mb{z} \right]^*(\mb{y}-\mb{z}) \le 0,
+\end{equation}
+which entails
+\begin{equation}
+{\rho \over L} df(\mb{y})(\mb{y}-\mb{z}) \ge \mb{y}^*(\mb{y}-\mb{z}) - \mb{z}^*(\mb{y}-\mb{z}) = \|\mb{y} - \mb{z}\|^2 \ge 0.
+\end{equation}
+Thus, the condition ${\rho \over L} df(\mb{y})(\mb{y}-\mb{z}) \ge 0$ is a necessary condition for a fixed point, which is a necessary condition for
+optimality.
+
+When $f(\mb{x})$ is convex, the fixed point implies global optimality.
+
+
+
+%------------------------------------------------------------------
+
+\section*{Problem 7.15}
+
+\subsection*{When $\mb{x}$ occurs on the interior of $C$} 
+
+When $\mb{x}$ occurs on the interior of $C$, then $\text{dist}(\mb{x}, C) = 0$, and $F_{\rho}(\mb{y})$ and $f(\mb{y})$ coincide in a neighborhood of $\mb{x}$.
+Since $C$ is closed and convex, and $\mb{x}$ minimizes $f(\mb{y})$, it also minimizes $F_{\rho}(\mb{y})$. When $\mb{x}$ minimizes $F_{\rho}(\mb{y}) = f(\mb{y})$,
+it clearly minimizes $f(\mb{y})$. So the converse is also true.
+
+\subsection*{When $\mb{x}$ occurs outside $C$}
+
+If $\mb{x}$ minimizes $F_{\rho}(\mb{y})$ but occurs outside $C$, then the directional derivative in the direction $\mb{v}$ for $F_{\rho}(\mb{x})$ is
+\begin{equation}
+    d_{\mb{v}}F_{\rho}(\mb{x}) = d_{\mb{v}}f(\mb{x}) + \rho { {[\mb{x}-P_C(\mb{x})]^*\mb{v}} \over {\|\mb{x}-P_C(\mb{x})\|} }.
+\end{equation}
+Setting $\mb{v} = -{ {\mb{x}-P_C(\mb{x})} \over {\|\mb{x}-P_C(\mb{x})\|} }$ gives $d_{\mb{v}}F_{\rho}(\mb{x}) = d_{\mb{v}}f(\mb{x}) - \rho$.
+Since $\|\mb{v}\| = 1$, by proposition 3.2.3 we have $|d_{\mb{v}}f(\mb{x})| \le L$, which entails
+$d_{\mb{v}}F_{\rho}(\mb{x}) = d_{\mb{v}}f(\mb{x}) - \rho \le L - \rho < 0$ for $\rho > L$. By proposition 3.3.1, this contradicts the assumption that $\mb{x}$
+minimizes $F_{\rho}(\mb{y})$. Therefore, if $\mb{x}$ minimizes $F_{\rho}(\mb{y})$, it must occurs in $C$. And we can apply the first and third conclusion to prove
+necessity and sufficiency.
+
+\subsection*{When $\mb{x}$ occurs on the boundary of $C$} 
+
+If $\mb{x}$ minimizes $F_{\rho}(\mb{y})$ and is a boundary point of $C$, then by (3.5)
+\begin{equation}
+    d_{\mb{v}}F_{\rho}(\mb{x}) = d_{\mb{v}}f(\mb{x}) + \rho \| \mb{v} - P_{T_C(\mb{x})}(\mb{v}) \|.
+\end{equation}
+For tangent vectors $\mb{v} \in P_{T_C(\mb{x})}$, $f(\mb{y})$ and $F_{\rho}(\mb{y})$ have the same directional derivatives.
+For $f(\mb{y})$ convex, if $\mb{x}$ minimizes $f(\mb{y})$, then $d_{\mb{v}}f(\mb{x}) \ge 0$ for all tangent directions $\mb{v}$, which entails
+$d_{\mb{v}}F_{\rho}(\mb{x}) \ge 0$ for all $\mb{v}$ as well, justifying the optimality of $\mb{x}$ for $F_{\rho}(\mb{y})$. The converse is clearly
+also true.
+
+%------------------------------------------------------------------
+
+\section*{Problem 7.16}
+
+Let $S = \{(\mb{u},\mb{v}) : \mb{v} = f(\mb{u})\}$ be the graph of $f(\mb{x})$.
+Since $f(\mb{x})$ is continuous, for every sequence $\mb{x}_n$ with $\lim_{n \rightarrow \infty} \mb{x}_n = \mb{x}$, we have
+$\lim_{n \rightarrow \infty} f(\mb{x}_n) = f(\mb{x})$. Let $\mb{y}_n = f(\mb{x}_n)$ and $\mb{y} = f(\mb{x})$,
+then $\lim_{n \rightarrow \infty} f(\mb{x}_n) = \lim_{n \rightarrow \infty} \mb{y}_n = \mb{y}$. Therefore, every sequence
+of points, $(\mb{x}_n, \mb{y}_n)$, converges to $(\mb{x}, \mb{y}) \in S$. And therefore,
+$S$ is a closed set. Thus, $S$ being a closed set is a necessary condition for $f(\mb{x})$ to be continuous. The converse, however, is not true
+as shown by the counterexample in the problem.
+
+%------------------------------------------------------------------------------
+
+\section*{Problem 7.19}
+
+We prove $S = T_{r-1} \circ \cdots \circ T_0$ is paracontractive through induction. The base case, $S_1 = T_0$, is paracontractive with fixed point set $F_0$
+by problem definition. Assume $S_{k} = T_{k-1} \circ \cdots \circ T_0$ is paracontractive with fixed point set $\cap_{i=0}^{k-1} F_i$.
+Let $\mb{y} \in F_k$, since $T_{k}$ is paracontractive, we have
+\begin{equation}
+\begin{split}
+\| T_k [ T_{k-1} \circ \cdots \circ T_0 (\mb{x}) ] - \mb{y} \|_\dagger
+& < \| T_{k-1} \circ \cdots \circ T_0 (\mb{x}) - \mb{y} \|_\dagger \\
+& < \| T_{k-2} \circ \cdots \circ T_0 (\mb{x}) - \mb{y} \|_\dagger \\
+& \cdots \\
+& < \|T_0 (\mb{x}) - \mb{y} \|_\dagger < \|\mb{x} - \mb{y}\|_\dagger
+\end{split}
+\end{equation}
+Therefore, the map $S_{k+1} = T_{k} \circ T_{k-1} \circ \cdots \circ T_0$ is also paracontractive. 
+Let $\mb{z}_{m+1} = S_{k+1}(\mb{z}_m)$, we then have the inequality $\| \mb{z}_{m+1} - \mb{y} \|_\dagger \le \| \mb{z}_m - \mb{y} \|_\dagger $
+which entails a lower bound $\| \mb{z}_m - \mb{y} \|_\dagger = d \ge 0$ and the cluster point $\mb{z}_{\infty}$ at which the lower bound is attained, suggesting
+\begin{equation}
+\| T_{k} \circ S_{k} (\mb{x}_\infty) - \mb{y}\|_\dagger \le \|\mb{x}_\infty - \mb{y}\|_\dagger.
+\end{equation}
+Therefore, $\mb{x}_\infty$ is both a stationary point in $\cap_{i=0}^{k-1} F_i$ (otherwise, $S_{k} (\mb{x}_\infty)$ will not be stationary making
+$T_k \circ S_{k} (\mb{x}_\infty)$ not stationary) and also a stationary point in $F_k$. In other words, $\mb{x}_\infty \in \cap_{i=0}^{k} F_i$.
+
+In conclusion, $S = T_{r-1} \circ \cdots \circ T_0$ is paracontractive with fixed point set $F = \cap_{i=0}^{r-1} F_i$.
+
+%------------------------------------------------------------------
+
+
+\section*{Problem 7.22}
+
+We first show that $g(\mb{x}) = {L \over 2}  \mb{x}^*\mb{x} - f(\mb{x})$ is convex. Because the gradient of $f(\mb{x})$ is Lipschitz continuous, $f(\mb{x})$
+is twice differentiable and has the inequality $\|\nabla f(\mb{x}) - \nabla f(\mb{y})\| \le L \| \mb{x} - \mb{y}\|$.
+From Cauchy-Schwarz inequality, we have
+\begin{equation}
+\begin{split}
+[\nabla f(\mb{x}) - \nabla f(\mb{y})]^*(\mb{x} - \mb{y})
+& \le \|\nabla f(\mb{x}) - \nabla f(\mb{y})\| \| \mb{x} - \mb{y}\| \\
+& \le L \| \mb{x} - \mb{y}\|^2.
+\end{split}
+\label{eqn:cauchy_22}
+\end{equation}
+The above inequality entails
+\begin{equation}
+\begin{split}
+[\nabla g(\mb{x}) - \nabla g(\mb{y})]^*(\mb{x}-\mb{y})
+& = \{[L\mb{x}-\nabla f(\mb{x})] - [L\mb{y}-\nabla f(\mb{y})]\}^*(\mb{x} - \mb{y}) \\
+& = L\|\mb{x}-\mb{y}\|^2 - [\nabla f(\mb{x}) - \nabla f(\mb{y})]^*(\mb{x} - \mb{y}) \ge 0.
+\end{split}
+\end{equation}
+It follows that $\nabla g(\mb{x})$ is monotone, that $g(\mb{x})$ is convex by proposition 5.2.2, and that $L \mb{I} - d^2 f(\mb{x})$ is positive semi-definite.
+
+By the quadratic upper bound principle, we have
+\begin{equation}
+    f(\mb{x}) \le f(\mb{y}) + \nabla f(\mb{y})^*(\mb{x}-\mb{y}) + {L \over 2}\|\mb{x}-\mb{y}\|^2
+    = f(\mb{y}) + {L \over 2}\|\mb{x}-\mb{y}\|^2,
+    \label{eqn:qua_ub_22}
+\end{equation}
+where the equality follows from $\nabla f(\mb{y}) = \mb{0}$ when $\mb{y}$ attains the minimum. Thus, we have the inequality
+$f(\mb{x})-f(\mb{y}) \le {L \over 2}\|\mb{x}-\mb{y}\|^2$.
+
+By the quadratic upper bound principle, we also have
+\begin{equation}
+    f(\mb{y}) \le f(\mb{z}) \le f(\mb{x}) + \nabla f(\mb{x})^*(\mb{z}-\mb{x}) + {L \over 2}\|\mb{z}-\mb{x}\|^2.
+\end{equation}
+We minimize the right hand side over $\mb{z}$, this yields the optimal point $\hat{\mb{z}} = \mb{x} - {1 \over L} \nabla f(\mb{x})$, with optimal value
+$f(\mb{x}) - {2 \over L}\|\nabla f(\mb{x})\|^2$. This gives us a tighter upper bound for $f(\mb{y})$, i.e.
+$f(\mb{y}) \le f(\mb{x}) - {2 \over L}\|\nabla f(\mb{x})\|^2$, which entails $f(\mb{x}) - f(\mb{y}) \ge {2 \over L}\|\nabla f(\mb{x})\|^2$.
+
+Put together, we have 
+\begin{equation}
+{2 \over L}\|\nabla f(\mb{x})\|^2 \le f(\mb{x})-f(\mb{y}) \le {L \over 2}\|\mb{x}-\mb{y}\|^2 .
+\end{equation}
+
+%-----------------------------------------------------------------------------------------------------
+
+\section*{Problem 7.23}
+
+The convexity of $h(\mb{x} | \mb{x}_n) = g(\mb{x} | \mb{x}_n) - {\mu \over 2} \|\mb{x}\|^2$ entails
+\begin{equation}
+\begin{split}
+& g(\mb{x}_n | \mb{x}_n) - {\mu \over 2}\|\mb{x}_n\|^2 \\
+& \ge g(\mb{x}_{n+1}|\mb{x}_n) - {\mu \over 2}\|\mb{x}_{n+1}\|^2 + [\partial g(\mb{x}_{n+1}|\mb{x_n})-\mu\mb{x}_{n+1}]^*(\mb{x}_{n}-\mb{x}_{n+1}) \\
+& = g(\mb{x}_{n+1}|\mb{x}_n) - {\mu \over 2}\|\mb{x}_{n+1}\|^2 -\mu\mb{x}_{n+1}^*(\mb{x}_{n}-\mb{x}_{n+1}),
+\end{split}
+\end{equation}
+where the equality follows from the fact that $\partial g(\mb{x}_{n+1}|\mb{x_n}) = \mb{0}$ at $\mb{x}_{n+1}$. Rearranging the inequality gives
+\begin{equation}
+\begin{split}
+g(\mb{x}_n | \mb{x}_n) & \ge g(\mb{x}_{n+1}|\mb{x}_n) + {\mu \over 2} \|\mb{x}_{n+1}\|^2 + {\mu \over 2} \|\mb{x}_{n}\|^2 - \mu \mb{x}_n^*\mb{x}_{n+1} \\
+& = g(\mb{x}_{n+1}|\mb{x}_n) + {\mu \over 2} \|\mb{x}_{n+1}-\mb{x}_n\|^2.
+\end{split}
+\end{equation}
+
+From the first inequality, we have
+\begin{equation}
+g(\mb{x}_n | \mb{x}_n) - g(\mb{x}_{n+1}|\mb{x}_n) = f(\mb{x}_n) - g(\mb{x}_{n+1}|\mb{x}_n) \ge {\mu \over 2} \|\mb{x}_{n+1}-\mb{x}_n\|^2.
+\end{equation}
+Since $g(\mb{x}_{n+1}|\mb{x}_n) \ge f(\mb{x}_{n+1})$, $f(\mb{x}_n) -f(\mb{x}_{n+1}) \ge f(\mb{x}_n) - g(\mb{x}_{n+1}|\mb{x}_n)$.
+And so, 
+\begin{equation}
+f(\mb{x}_n) -f(\mb{x}_{n+1}) \ge {\mu \over 2} \|\mb{x}_{n+1}-\mb{x}_n\|^2 .
+\end{equation}
+
+To show the third inequality, we note that
+\begin{equation}
+{\mu \over 2} \sum_{k=1}^n \| \mb{x}_k - \mb{x}_{k+1} \| \le \sum_{k=1}^n [f(\mb{x}_k) - f(\mb{x}_{k+1})] = f(\mb{x}_1) - f(\mb{x}_{n+1}).
+\end{equation}
+
+Since the objective $f(\mb{x})$ is bounded and the sequence $f(\mb{x}_n)$ decreases monotonically, the left hand side of the third inequality is bounded as
+$n$ approaches $\infty$. Assume that $\lim_{n \rightarrow \infty} \|\mb{x}_n - \mb{x}_{n+1}\| = \epsilon > 0$, then
+${\mu \over 2} \sum_{i=1}^\infty \|\mb{x}_k - \mb{x}_{k+1}\| = \infty$, contradicting the fact that left hand side is bounded.
+Therefore, $\lim_{n \rightarrow \infty} \|\mb{x}_n - \mb{x}_{n+1}\| = 0$.
+
+%-------------------------------------------------------------------------------
+
+\section*{Problem 7.24}
+
+If $\mb{x}$ minimizes $g(\mb{y} | \mb{x})$, then by proposition 3.3.1, $d_{\mb{v}}g(\mb{x}|\mb{x}) \ge 0$ for all tangent directions $\mb{v}$.
+Since $d_{\mb{v}}(\mb{x}|\mb{x}) = d_{\mb{v}}f(\mb{x})$ for all $\mb{x}$ and $\mb{v}$ due to strong tangency condition, we have $d_{\mb{v}}f(\mb{x}) \ge 0$
+for all tangent directions $\mb{v}$ as well. This justifies $\mb{x}$ as a stationary point of $f(\mb{y})$.
+
+\end{document}

@@ -1,0 +1,565 @@
+\documentclass{scrartcl}
+\usepackage{etoolbox}
+\usepackage{bbm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathabx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{parskip}
+\usepackage{indentfirst}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\pagestyle{fancy}
+\usepackage{subcaption}
+\setlength{\parskip}{0em}
+\setlength{\parindent}{2em}
+
+%-----------------------------------------------------------------------------
+\begin{document}
+
+
+
+
+
+%-----------------------------------------------------------------------------
+% header
+\lhead{Huwenbo Shi (603-778-363) shihuwenbo@ucla.edu}
+
+% title
+\newcommand*{\TitleFont}{
+      \usefont{\encodingdefault}{\rmdefault}{b}{n}
+      \fontsize{16}{20}
+      \selectfont}
+\newcommand*{\AuthorFont}{
+      \usefont{\encodingdefault}{\rmdefault}{r}{n}
+      \fontsize{12}{20}
+      \selectfont}
+\title{\TitleFont Biomath 210 Homework 2}
+\author{\AuthorFont Huwenbo Shi (603-778-363) shihuwenbo@ucla.edu}
+\maketitle
+
+\newcommand*{\argmin}{\operatornamewithlimits{argmin}\limits}
+\newcommand{\tr}{\mathrm{tr}}
+\newcommand{\dom}{\mathrm{dom}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\epi}{\mathrm{epi}}
+\def\mb#1{\mathbf{#1}}
+
+%-----------------------------------------------------------------------------
+
+\section*{Problem 2.10}
+
+To show $f(\mb{x})_+$ is convex, we notice that
+\begin{equation}
+	\begin{split}
+	\epi \; f(\mb{x})_+
+		& = \{(\mb{x}, y) : \mb{x} \in \dom \;
+	          f, \max\{f(\mb{x}), 0\} \le y \} \\
+	    & = \{(\mb{x}, y) : \mb{x} \in \dom \; f, f(\mb{x}) \le y \} \cap
+	        \{(\mb{x}, y) : \mb{x} \in \dom \; f, 0 \le y \} .
+	\end{split}
+\end{equation}
+Because $f(\mb{x})$ is a convex function, the set
+$\{(\mb{x}, y) : \mb{x} \in \dom \; f, f(\mb{x}) \le y \}$
+is a convex set. The set $\{(\mb{x}, y) : \mb{x} \in \dom \; f, 0 \le y \}$
+is also a convex set because it's the epigraph of the function $f(\mb{x}) = 0$.
+Because the intersection of convex sets is convex, we conclude that
+$\epi \; f(\mb{x})_+$ is a convex set. And therefore, the function
+$f(\mb{x})_+$ is a convex function.
+
+Let $h(\mb{x}) = \sqrt{f(\mb{x})^2+\epsilon}$. To show the convexity of
+$h(\mb{x})$, we show that $h(\mb{x})$ satisfies the following definition of convex functions
+\begin{equation}
+	h(\alpha \mb{x}+(1-\alpha)\mb{y})
+	\le \alpha h(\mb{x}) + (1-\alpha) h(\mb{y}) .
+\end{equation}
+Because $f(\mb{x})$ is convex and non-negative, we have
+\begin{equation}
+\begin{split}
+h(\alpha \mb{x}+(1-\alpha)\mb{y}) &  = \sqrt{f(\alpha \mb{x}+(1-\alpha)\mb{y})^2+\epsilon} \\
+& \le \sqrt{[\alpha f(\mb{x})+(1-\alpha)f(\mb{y})]^2+\epsilon} .
+\end{split}
+\end{equation}
+Taking the square of the right hand side of the inequality, we have
+\begin{equation}
+\begin{split}
+& \left( \sqrt{[\alpha f(\mb{x})+(1-\alpha)f(\mb{y})]^2+\epsilon} \right) ^2 \\
+& = [\alpha f(\mb{x})+(1-\alpha)f(\mb{y})]^2+\epsilon \\
+& = \alpha^2 f(\mb{x})^2 + (1-\alpha)^2 f(\mb{y})^2 
+    + 2\alpha(1-\alpha)f(\mb{x})f(\mb{y})+\epsilon .
+\end{split}
+\end{equation}
+Taking the square of $(\alpha h(\mb{x}) + (1-\alpha) h(\mb{y}))$, we get
+\begin{equation}
+	\begin{split}
+	& \left( \alpha h(\mb{x}) + (1-\alpha) h(\mb{y}) \right)^2 \\
+	& = \left( \alpha \sqrt{f(\mb{x})^2+\epsilon}
+	    + (1-\alpha) \sqrt{f(\mb{y})^2+\epsilon)} \right)^2 \\
+	& = \alpha^2 f(\mb{x})^2 + \alpha \epsilon + (1-\alpha)^2 f(\mb{y})^2 + (1-\alpha) \epsilon
+	    + 2 \alpha (1-\alpha) \sqrt{f(\mb{x})^2+\epsilon} \sqrt{f(\mb{y})^2+\epsilon)} \\
+	& = \alpha^2 f(\mb{x})^2 + (1-\alpha)^2 f(\mb{y})^2
+	    + 2 \alpha (1-\alpha) \sqrt{f(\mb{x})^2+\epsilon} \sqrt{f(\mb{y})^2+\epsilon)} + \epsilon .
+	\end{split}
+\end{equation}
+Because $\epsilon$ is positive, and
+\begin{equation}
+\begin{split}
+\sqrt{f(\mb{x})^2+\epsilon} & \ge f(\mb{x}) \\
+\sqrt{f(\mb{y})^2+\epsilon} & \ge f(\mb{y}) 
+\end{split} ,
+\end{equation}
+we have 
+\begin{equation}
+\left( \alpha h(\mb{x}) + (1-\alpha) h(\mb{y}) \right)^2
+\ge \left( \sqrt{[\alpha f(\mb{x})+(1-\alpha)f(\mb{y})]^2+\epsilon} \right) ^2 ,
+\end{equation}
+which implies
+\begin{equation}
+\alpha h(\mb{x}) + (1-\alpha) h(\mb{y})
+\ge \sqrt{[\alpha f(\mb{x})+(1-\alpha)f(\mb{y})]^2+\epsilon}
+\ge h(\alpha \mb{x}+(1-\alpha)\mb{y}) .
+\end{equation}
+Thus, we conclude that $\sqrt{f(\mb{x})^2+\epsilon}$ is a convex function.
+
+
+\section*{Problem 2.11}
+
+Because $f(\mb{x})$ is Lipschitz with constant $L$, we have
+\begin{equation}
+	|f(\mb{x}) - f(\mb{y})| \le L \|\mb{x}-\mb{y}\|
+	\label{eqn:lip_ineq}
+\end{equation}
+for all $\mb{x}$ and $\mb{y}$ in the domain of $f$.
+
+First, we show that $|f(\mb{x})|$ is Lipschitz with constant $L$.
+By reverse triangle inequality, we have
+\begin{equation}
+	||f(\mb{x})|-|f(\mb{y})|| \le |f(\mb{x})-f(\mb{y})| \le L \|\mb{x}-\mb{y}\| .
+\end{equation}
+And therefore, $|f(\mb{x})|$ is Lipschitz with constant $L$.
+
+Then, we show that $f(\mb{x})_+$ is Lipschitz with constant $L$.
+We notice that
+\begin{equation}
+	\begin{split}
+	|f(\mb{x})_+-f(\mb{y})_+|
+	& = |\max\{f(\mb{x})_+,0\}-\max\{f(\mb{y})_+,0\}| \\
+	& =
+	\begin{cases}
+    		|f(\mb{x})|  &  \text{if } f(\mb{x}) \ge 0 \text{ and } f(\mb{y}) \le 0 \\
+		|f(\mb{y})|  &  \text{if } f(\mb{x}) \le 0 \text{ and } f(\mb{y}) \ge 0 \\    		
+    		|f(\mb{x})-f(\mb{y})| & \text{if } f(\mb{x}) \ge 0 \text{ and } f(\mb{y}) \ge 0 \\
+    		0 & \text{if } f(\mb{x}) \le 0 \text{ and } f(\mb{y}) \le 0
+	\end{cases}
+	\end{split}
+\end{equation}
+For $f(\mb{x}) \ge 0 \text{ and } f(\mb{y}) \le 0$,
+$|f(\mb{x})| \le |f(\mb{x})-f(\mb{y})| \le L \|\mb{x}-\mb{y}\|$. \\
+For $f(\mb{x}) \le 0 \text{ and } f(\mb{y}) \ge 0$,
+$|f(\mb{y})| \le |f(\mb{x})-f(\mb{y})| \le L \|\mb{x}-\mb{y}\|$. \\
+For $f(\mb{x}) \ge 0 \text{ and } f(\mb{y}) \ge 0$,
+$|f(\mb{x})-f(\mb{y})| \le L \|\mb{x}-\mb{y}\|$
+by assumption. \\
+For $f(\mb{x}) \le 0 \text{ and } f(\mb{y}) \le 0$,
+obviously $0 \le L \|\mb{x}-\mb{y}\|$. \\
+Therefore, $f(\mb{x})_+$ is Lipschitz with constant $L$.
+
+To show $\sqrt{f(\mb{x})^2+\epsilon}$ is Lipschitz, we notice that for positive $\epsilon$
+\begin{equation}
+	\begin{split}
+	& |\sqrt{f(\mb{x})^2+\epsilon}-\sqrt{f(\mb{y})^2+\epsilon}|^2 \\
+	& = f(\mb{x})^2+f(\mb{y})^2+2\epsilon-2\sqrt{f(\mb{x})^2+\epsilon}\sqrt{f(\mb{y})^2+\epsilon} \\
+	& \le f(\mb{x})^2+f(\mb{y})^2+2\epsilon-2(\sqrt{f(\mb{x})^2}+\sqrt{\epsilon})
+	                                        (\sqrt{f(\mb{y})^2}+\sqrt{\epsilon}) \\
+	& \le f(\mb{x})^2+f(\mb{y})^2-2\sqrt{f(\mb{x})^2}\sqrt{f(\mb{y})^2}
+			-2\sqrt{f(\mb{x})^2}\sqrt{\epsilon}-2\sqrt{f(\mb{y})^2}\sqrt{\epsilon} \\
+	& \le  f(\mb{x})^2+f(\mb{y})^2 - 2\sqrt{f(\mb{x})^2}\sqrt{f(\mb{y})^2} \\
+	& = |f(\mb{x})-f(\mb{y})|^2 ,
+	\end{split}
+\end{equation}
+where the first inequality follows from
+\begin{equation}
+	(\sqrt{f(\mb{x})^2}+\sqrt{\epsilon})^2
+	= f(\mb{x})^2 + \epsilon + 2\sqrt{f(\mb{x})^2}\sqrt{\epsilon}
+	\ge f(\mb{x})^2+\epsilon
+	= (\sqrt{f(\mb{x})^2+\epsilon})^2 . 
+\end{equation}
+Therefore,
+\begin{equation}
+ |\sqrt{f(\mb{x})^2+\epsilon}-\sqrt{f(\mb{y})^2+\epsilon}|
+ \le |f(\mb{x})-f(\mb{y})|
+ \le L \|\mb{x}-\mb{y}\| .
+\end{equation}
+And so $\sqrt{f(\mb{x})^2+\epsilon}$ is Lipschitz as well.
+
+
+
+
+
+\section*{Problem 2.14}
+
+First, notice that
+\begin{equation}
+	\begin{split}
+			{1 \over {b-a}} \int_a^b f(x) dx = \int_a^b f(x) {1 \over {b-a}} dx = \E[f(x)],
+	\end{split}
+\end{equation}
+where $x \sim \text{Uniform}(a,b)$.
+By the probabilistic version of Jensen's inequality for convex functions, we have
+\begin{equation}
+	f(\E[x]) = f\left({{a+b} \over 2}\right) \le \E[f(x)] = {1 \over {b-a}} \int_a^b f(x) dx .
+\end{equation}
+By the convexity of $f(x)$ we have
+\begin{equation}
+	f(x) \le f(a) + {{f(b)-f(a)} \over {b-a}} (x-a),
+\end{equation}
+for $x \in [a, b]$, which implies
+\begin{equation}
+	\begin{split}
+		\int_a^b f(x) dx & \le \int_a^b f(a) + {{f(b)-f(a)} \over {b-a}} (x-a) dx \\
+		& = f(a)(b-a)+{1 \over 2}[f(b)-f(a)](b+a)-a[f(b)-f(a)] \\
+		& = f(a)(b-a)+{1 \over 2}[f(b)-f(a)](b-a) \\
+		& = {1 \over 2}[f(b)+f(a)](b-a).
+	\end{split}
+\end{equation}
+Therefore, we have the inequality
+\begin{equation}
+	f\left({{a+b} \over 2}\right) \le {1 \over {b-a}} \int_a^b f(x) dx \le {1 \over 2}[f(b)+f(a)].
+\end{equation}
+
+
+
+
+
+\section*{Problem 2.15}
+Let $g(x,y) = f(y)$. For each fixed $y$, $g(x,y)$ becomes a constant and is convex in $x$.
+Then,
+\begin{equation}
+	\begin{split}
+	    h(x) & = {1 \over x} \int_0^x g(x, y) dy
+	    	       =  \int_0^x g(x, y) d \mu(y),
+	\end{split}
+\end{equation}
+where $\mu(y) = {1 \over x}$ is a measure for $y \sim \text{Uniform}(0, x)$,
+is a convex function by Proposition 2.3.4.
+Since ${1 \over x} \int_0^x g(x, y) dy = {1 \over x} \int_0^x f(y) dy$, we conclude that
+the running average ${1 \over x} \int_0^x f(y) dy$ is also convex.
+
+
+
+
+
+
+\section*{Problem 2.21}
+
+Let $g(\mb{x}) = f(\mb{x}) - {\mu \over 2} \| \mb{x} \| ^2$,
+because $f(\mb{x})$ is strongly convex with parameter
+$\mu$, $g(\mb{x})$ is then convex, and satisfies the following inequalities
+\begin{equation}
+	\begin{split}
+		& f(\mb{x})-{\mu \over 2} \| \mb{x} \|^2
+		  \ge f(\mb{y})-{\mu \over 2} \| \mb{y} \|^2
+		  + (\nabla f(\mb{y})-\mu \mb{y})^*(\mb{x}-\mb{y}) \\
+		& f(\mb{y})-{\mu \over 2} \| \mb{y} \|^2
+		  \ge f(\mb{x})-{\mu \over 2} \| \mb{x} \|^2
+		  + (\nabla f(\mb{x})-\mu \mb{x})^*(\mb{y}-\mb{x}).
+	\end{split}
+\end{equation}
+Summing both sides of the above inequalities gives
+\begin{equation}
+	\begin{split}
+		& 0 \ge (\nabla f(\mb{x})-\mu \mb{x})^*(\mb{y}-\mb{x})
+		      + (\nabla f(\mb{y})-\mu \mb{y})^*(\mb{x}-\mb{y}) \\
+		& 0 \ge df(\mb{x})(\mb{y}-\mb{x})-\mu \mb{x}^*(\mb{y}-\mb{x})	
+		      + df(\mb{y})(\mb{x}-\mb{y})-\mu \mb{y}^*(\mb{x}-\mb{y}) \\
+		& \mu [\mb{x}^*(\mb{y}-\mb{x})+\mb{y}^*(\mb{x}-\mb{y})]
+		    \ge df(\mb{x})(\mb{y}-\mb{x})+df(\mb{y})(\mb{x}-\mb{y}) \\
+		& -\mu \| \mb{y} - \mb{x} \|^2 \ge -[df(\mb{y})-df(\mb{x})](\mb{y}-\mb{x}) \\
+		& [df(\mb{y})-df(\mb{x})](\mb{y}-\mb{x}) \ge \mu \| \mb{y} - \mb{x} \|^2 .
+	\end{split}
+\end{equation}
+To show $d^2f(\mb{x})-\mu \mb{I}$ is positive semidefinite, let $\mb{y} = \mb{x}+t\mb{v}$,
+for sufficiently small $t$. From the previous inequality
+\begin{equation}
+[df(\mb{x}+t\mb{v})-df(\mb{x})]t\mb{v} \ge \mu t^2 \|\mb{v}\|^2 .
+\end{equation}
+Simplifying terms, gives
+\begin{equation}
+	\begin{split}
+	    & [df(\mb{x}+t\mb{v})-df(\mb{x})]\mb{v} - \mu t {\|\mb{v}}\|^2 \ge 0 \\
+	    & (s^2(\mb{x}+t\mb{v},\mb{x})t\mb{v})^* \mb{v} - \mu t {\|\mb{v}}\|^2 \ge 0 \\
+	    & \mb{v}^*s^2(\mb{x}+t\mb{v},\mb{x}) \mb{v} - \mu \|\mb{v}\|^2 \ge 0 \\
+	    & \mb{v}^*[ s^2(\mb{x}+t\mb{v},\mb{x}) -\mu \mb{I} ] \mb{v} \ge 0.
+	\end{split}
+\end{equation}
+Sending $t$ to 0, gives
+\begin{equation}
+	\mb{v}^*[ d^2f(\mb{x}) -\mu \mb{I} ] \mb{v} \ge 0.
+\end{equation}
+In other words, $d^2f(\mb{x})-\mu \mb{I}$ is positive semidefinite.
+
+
+
+
+\section*{Problem 2.22}
+
+Let $g(\mb{x}) = f(\mb{x})-{\mu \over 2}\|\mb{x}\|^2$.
+Because $f(\mb{x})$ is strongly convex with parameter $\mu > 0$,
+$g(\mb{x})$ is convex and satisfies the inequality
+\begin{equation}
+	g(\alpha \mb{x} + (1-\alpha)\mb{y}) \le \alpha g(\mb{x}) + (1-\alpha)g(\mb{y})
+\end{equation}
+for $\alpha \in [0, 1]$, which implies
+\begin{equation}
+	\begin{split}
+	& f(\alpha \mb{x} + (1-\alpha)\mb{y})-{\mu \over 2} \|\alpha \mb{x} + (1-\alpha)\mb{y} \|^2
+	\le \alpha [f(\mb{x}) - {\mu \over 2}\|\mb{x}\|^2] + (1-\alpha)[f(\mb{y}) - {\mu \over 2}\|\mb{y}\|^2] \\
+	& f(\alpha \mb{x} + (1-\alpha)\mb{y}) \le \alpha f(\mb{x}) + (1-\alpha)f(\mb{y})
+	+ {\mu \over 2}[\|\alpha \mb{x} + (1-\alpha)\mb{y} \|^2-\alpha\|\mb{x}\|^2-(1-\alpha)\|\mb{y}\|^2]
+	\end{split}
+\end{equation}
+Let $c = {\mu \over 2}[\|\alpha \mb{x} + (1-\alpha)\mb{y} \|^2-\alpha\|\mb{x}\|^2-(1-\alpha)\|\mb{y}\|^2] $.
+Because the function $\mb{x}^*\mb{x}$ has positive definite second differential $2\mb{I}$, it's
+strictly convex. Therefore, for $x \ne y$ and $\mu$ positive, $c < 0$, which implies the
+strict inequality
+\begin{equation}
+f(\alpha \mb{x} + (1-\alpha)\mb{y}) < \alpha f(\mb{x}) + (1-\alpha)f(\mb{y}) .
+\end{equation}
+In other words, $f(\mb{x})$ is strictly convex.
+
+To show $f(\mb{x})$ has a unique global minimum, we use proof by contradiction.
+Assume there exist two local minimum $\mb{x}_1$ and $\mb{x}_2$ ($\mb{x}_1 \ne \mb{x}_2$).
+Without loss of generality, let $f(\mb{x}_1) \le f(\mb{x}_2)$.
+By strict convexity of $f(\mb{x})$, we have
+\begin{equation}
+	\begin{split}
+	f(\alpha \mb{x}_1 + (1-\alpha) \mb{x}_2)
+	& < \alpha f(\mb{x}_1) + (1-\alpha) f(\mb{x}_2) \\
+	& \le \alpha f(\mb{x}_2) + (1-\alpha) f(\mb{x}_2)
+	= f(\mb{x}_2).
+	\end{split}
+\end{equation}
+For $\alpha$ sufficiently small, the above inequality contradicts the assumption that
+$\mb{x}_2$ is a local minimum.
+Therefore, there exists a unique global minimum for $f(\mb{x})$.
+
+To show $f(\mb{x}) \ge f(\mb{y})+{\mu \over 2} \| \mb{x} - \mb{y} \|^2$, we apply
+the supporting hyperplane inequality on $f(\mb{x})-{\mu \over 2}\|\mb{x}\|^2$,
+\begin{equation}
+	\begin{split}
+	f(\mb{x})-{\mu \over 2}\|\mb{x}\|^2
+	& \ge f(\mb{y})-{\mu \over 2}\|\mb{y}\|^2+(\nabla f(\mb{y})-\mu \mb{y})^*(\mb{x}-\mb{y}) \\
+	f(\mb{x}) & \ge f(\mb{y})+{\mu \over 2}(\mb{x}^*\mb{x}-\mb{y}^*\mb{y})
+	  +df(\mb{y})(\mb{x}-\mb{y})-\mu \mb{y}^*(\mb{x}-\mb{y})\\
+	& = f(\mb{y}) + {\mu \over 2}(\mb{x}^*\mb{x}-\mb{y}^*\mb{y}-2\mb{x}^*\mb{y}+2\mb{y}^*\mb{y})
+	  + df(\mb{y})(\mb{x}-\mb{y}) \\
+	& = f(\mb{y}) + {\mu \over 2}(\mb{x}^*\mb{x}+\mb{y}^*\mb{y}-2\mb{x}^*\mb{y})
+	  +df(\mb{y})(\mb{x}-\mb{y}) \\
+	& = f(\mb{y}) + {\mu \over 2}\|\mb{x}-\mb{y}\|^2+df(\mb{y})(\mb{x}-\mb{y}).
+	\end{split}
+\end{equation}
+For the stationary point $\mb{y}$, $df(\mb{y}) = 0$. Thus the inequality
+$f(\mb{x}) \ge f(\mb{y})+{\mu \over 2} \| \mb{x} - \mb{y} \|^2$.
+
+
+
+\section*{Problem 2.23}
+
+Assume $f(\mb{x})$ is strongly convex with parameter $\mu$.
+Let $g(\mb{x}) = f(\mb{x})-\mb{y}^*\mb{x}-{\mu \over 2}\|\mb{x}\|^2$.
+Then, by the strong convexity of $f(\mb{x})$,
+\begin{equation}
+	\begin{split}
+		& g(\alpha \mb{x} + (1-\alpha) \mb{z}) \\
+		& = f(\alpha \mb{x} + (1-\alpha) \mb{z})-\mb{y}^*(\alpha \mb{x} + (1-\alpha) \mb{z}) 
+		    - {\mu \over 2}\| \alpha \mb{x} + (1-\alpha) \mb{z} \|^2 \\
+		& \le \alpha f(\mb{x}) + (1-\alpha) f(\mb{z})
+		  -(\alpha \mb{y}^*\mb{x}+(1-\alpha) \mb{y}^*\mb{z})
+		  -{\mu \over 2} \alpha \mb{x} - {\mu \over 2} (1-\alpha) \mb{z} \\
+		& = \alpha g(\mb{x}) + (1-\alpha) g(\mb{z}) .
+	\end{split}
+\end{equation}
+Therefore, $g(\mb{x})$ is convex, and $f(\mb{x})-\mb{y}^*\mb{x}$ is strongly convex.
+From problem 22, we know that $h(\mb{x}) = f(\mb{x})-\mb{y}^*\mb{x}$
+possesses a unique global minimum. Since $h(\mb{x})$ is differentiable, the global
+minimum occurs at the stationary point at which
+\begin{equation}
+	\nabla h(\mb{x}) = \nabla f(\mb{x}) - \mb{y} = 0.
+\end{equation}
+Therefore, the equation $\nabla f(\mb{x}) = \mb{y}$ is unique solvable for all $\mb{y}$.
+
+
+
+
+\section*{Problem 2.26}
+First, we show that $C$ is a convex set.
+Let $\mb{x} = \sum_{i=1}^m a_i \mb{u}_i, \; a_i \ge 0$ and
+$\mb{y} = \sum_{i=1}^m b_i \mb{u}_i, \; b_i \ge 0$, i.e. $\mb{x} \in C$
+and $\mb{y} \in C$. Let $\mb{z} = \gamma \mb{x} + (1-\gamma) \mb{y}$, where
+$\gamma \in [0,1]$. Then
+\begin{equation}
+	\mb{z} = \sum_{i=1}^m c_i \mb{u}_i
+	       = \sum_{i=1}^m [\gamma a_i + (1-\gamma) b_i] \mb{u}_i,
+\end{equation}
+where $c_i = \gamma a_i + (1-\gamma) b_i \ge 0$. Thus, $\mb{z} \in C$, and
+$C$ is a convex set.
+
+To show the set $C$ is closed, we first assume the vectors $\mb{u}_i$ are
+linearly independent. Then, for each $\mb{z}_j \in C$, we can represent it 
+as $\sum_{i=1}^m c_{ji} \mb{u}_i$, where the coefficients
+$c_{ji} \ge 0, \; i=\{1,\dotsc,m\}$ are unique for each $\mb{z}_j$.
+Let $\mb{U} = (\mb{u}_1,\dotsc,\mb{u}_m)$ be the matrix where
+$\mb{u}_i$ are the columns of $\mb{U}$. Then, the coefficient vector
+$\mb{c}_j = (c_1,\dotsc,c_m)$ that constructs $\mb{z}_j$ from $\mb{u}_i$
+can be uniquely represented as
+\begin{equation}
+	\mb{c}_j = (\mb{U}^*\mb{U})^{-1} \mb{U}^* \mb{z}_j,
+	\label{eqn:cj}
+\end{equation}
+which follows from $\mb{z}_j=\mb{U}\mb{c}_j$ and
+$\mb{U}^*\mb{z}_j=\mb{U}^*\mb{U}\mb{c}_j$.
+Now, assume the sequence $\mb{z}_j \in C$ converge to a point $\mb{z}$.
+By Equation \eqref{eqn:cj}, the sequence $\mb{c}_j$ converges to $\mb{c}$
+with all entries positive. Therefore, the point $\mb{z} = \mb{U}\mb{c} \in C$.
+And thus, the set $C$ is closed.
+
+When the vectors $\mb{u}_i$ are linearly dependent, there exists
+$\mb{\beta} = (\beta_1,\dotsc,\beta_m)$ such that not all $\beta_i$ are 0
+and $\sum_{i=1}^m \beta_i \mb{u}_i = 0$. Then the point $\mb{z} \in C$
+can be expressed as
+\begin{equation}
+	\mb{z} = \sum_{i=1}^m c_i \mb{u}_i
+	       = \sum_{i=1}^m c_i \mb{u}_i + t \sum_{i=1}^m \beta_i \mb{u}_i
+	       = \sum_{i=1}^m (c_i + t \beta_i) \mb{u}_i .
+	\label{eqn:ttrick}
+\end{equation}
+By taking the smallest $|t|$, we can render $c_j + t \beta_j = 0$ for the
+$j$-th coefficient, while keeping all other coefficients non-negative.
+Then $\mb{z}$ can be expressed as
+$\mb{z} = \sum_{i=1,i\ne j}^m (c_i + t \beta_i) \mb{u}_i$,
+which implies
+\begin{equation}
+	C = \bigcup_{j=1}^{m}
+	\left\lbrace 
+		\sum_{i=1,i\ne j}^m a_i \mb{u}_i : \; i \ne j, \; a_i \ge 0 .
+	\right\rbrace
+\end{equation}
+In other words, $C$ can be expressed as a union of the span of the linearly
+independent subset of $\mb{u}_i$ by non-negative coefficients.
+Because the sets
+$\left\lbrace \sum_{i=1,i\ne j}^m a_i \mb{u}_i : \; i \ne j, \; a_i \ge 0 \right\rbrace$
+are closed and convex, the finite union of them is also closed and convex.
+
+The above proof assume the matrix $\mb{U} = (\mb{u}_1,\dotsc,\mb{u}_m)$
+has rank $m-1$. By recursively applying the same argument in Equation \eqref{eqn:ttrick},
+one can generalize the proof for $\mb{U}$ with any rank.
+
+
+\section*{Problem 2.29}
+
+Finding the projection of $\mb{y}$ onto the set $U_k^n$ is equivalent to
+finding $\argmin_\mb{z} \| \mb{z} - \mb{y} \|$ with the constraint $\mb{z} \in U_k^n$.
+To show that the projection can be achieved by replacing the $k$ largest entries by
+1 and the remaining entries by 0, we use proof by induction.
+
+\textbf{Base case}:
+
+For the case when $n = 1$ and $k = 0$, $U_k^n = \{0\}$, and the projection
+of $\mb{y}$ onto $U_k^n$ is indeed $0$. For test case when $n = 1$ and $k = 1$, 
+$U_k^n = \{1\}$, and the projection of $\mb{y}$ onto $U_k^n$ is indeed $1$.
+
+\textbf{Induction assumption}:
+
+Assume for $n$ and $k$, we can obtain the projection by setting the $k$ largest
+entries of $\mb{y}$ to 1 and the remaining to 0.
+
+\textbf{Induction $k$ to $k+1$}:
+
+We first show that for $n$, the projection algorithm is correct
+as $k$ increases to $k+1$.
+
+Without loss of generality, assume $\mb{y} = (y_1, \dotsc, y_n)$ with
+$y_1 \ge \dotsc \ge y_n$. Then by assumption $(\mb{1}_k, \mb{0}_{n-k})$
+minimizes $\| \mb{z} - \mb{y} \|$ with the constraint $\mb{z} \in U_k^n$, with distance
+\begin{equation}
+	\| (\mb{1}_k, \mb{0}_{n-k}) - \mb{y} \|^2
+	= \sum_{i=1}^k (1-y_i)^2 + \sum_{i=k+1}^n y_i^2 .
+\end{equation}
+For $k+1$, the projection algorithm yields $(\mb{1}_{k+1}, \mb{0}_{n-k-1})$ with
+\begin{equation}
+	\begin{split}
+	\| (\mb{1}_{k+1}, \mb{0}_{n-k-1}) - \mb{y} \|^2
+	& = \sum_{i=1}^{k+1} (1-y_i)^2 + \sum_{i=k+2}^n y_i^2 \\
+	& = \sum_{i=1}^k (1-y_i)^2 + \sum_{i=k+1}^n y_i^2 + [(1-y_{k+1})^2-y_{k+1}^2] \\
+	& = \sum_{i=1}^k (1-y_i)^2 + \sum_{i=k+1}^n y_i^2 - [2y_{k+1} - 1]
+	\end{split}
+	\label{eqn:kplus1}
+\end{equation}
+From Equation \eqref{eqn:kplus1}, it's clear that the entry $y_{k+1}$ results in the largest
+reduction in distance between $\mb{z}$ and $\mb{y}$ from
+$\| (\mb{1}_k, \mb{0}_{n-k}) - \mb{y} \|^2$.
+Therefore, for $n$ and $k+1$, setting the $k+1$ largest entries of $\mb{y}$ to 1 and the remaining
+to 0 minimizes $\| \mb{z} - \mb{y} \|$.
+
+\textbf{Induction $n$ to $n+1$}:
+
+Then we show that for $k$, the projection algorithm is correct
+as $n$ increases to $n+1$.
+
+As shown previously, by assumption $(\mb{1}_k, \mb{0}_{n-k})$
+minimizes $\| \mb{z} - \mb{y} \|$ with the constraint $\mb{z} \in U_k^n$, with distance
+\begin{equation}
+	\| (\mb{1}_k, \mb{0}_{n-k}) - \mb{y} \|^2
+	= \sum_{i=1}^k (1-y_i)^2 + \sum_{i=k+1}^n y_i^2 .
+\end{equation}
+With $k$ fixed and $n$ increasing to $n+1$, the algorithm yields $(\mb{1}_{k}, \mb{0}_{n+1-k})$,
+with distance
+\begin{equation}
+	\begin{split}
+	\| (\mb{1}_{k}, \mb{0}_{n+1-k}) - \mb{y} \|^2
+	& = \sum_{i=1}^{k} (1-y_i)^2 + \sum_{i=k+1}^n y_i^2 + y_{n+1}^2 \\
+	\end{split}
+	\label{eqn:kplus1}
+\end{equation}
+Clearly, $y_{n+1}$ yields the smallest increment in $\| (\mb{1}_{k}, \mb{0}_{n+1-k}) - \mb{y} \|^2$.
+So the algorithm is correct when $k$ is fixed and $n$ increases to $n+1$.
+
+\textbf{Conclusion}:
+
+Having shown the induction in the $k$ and the $n$ direction, we can conclude that
+projection of $\mb{y}$ onto $U_k^n$ replaces the $k$ largest entries of $\mb{y}$ by 1
+and the remaining entries by 0.
+
+\section*{Problem 2.37}
+
+\begin{equation}
+	\begin{split}
+	\| \mb{x} \|_1 \| \mb{y} \|_\infty
+	= \max_i |y_i| \sum_i |x_i|
+	\ge \sum_i |x_i||y_i|
+	\ge \sum_i x_i y_i
+	= \mb{x}^*\mb{y}
+	\end{split}
+\end{equation}
+Equality holds when $x_i y_i \ge 0$ for all $i$ and $y_i = c$ for all $i$.
+
+
+
+
+\section*{Problem 2.40}
+
+From Von Neumann-Fan inequality, it follows that
+\begin{equation}
+	\tr \; \mb{A} = \sum_{i=1}^n \lambda_i \; , \; 
+	\tr \; \mb{A}^{-1} = \sum_{i=1}^n {1 \over \lambda_i} ,
+\end{equation}
+by letting $\mb{B} = \mb{I}_{n}$ in the inequality (2.16) and then applying
+the equality condition.
+Then $\tr \; \mb{A} + \tr \; \mb{A}^{-1} = \sum_{i=1}^n \lambda_i + 1/\lambda_i$.
+The minimum of $\lambda_i + 1/\lambda_i$ can be found by setting the derivative
+$1 - \lambda_i^{-2}$ to 0, from which we get $\lambda_i = 1$, and $\lambda_i + 1/\lambda_i = 2$.
+Therefore, $\tr \; \mb{A} + \tr \; \mb{A}^{-1} \ge 2n$. Equality is attained when
+$\lambda_i = 1$ for $i = 1,\dotsc,n$, which implies $\mb{A} = \mb{I}_n.$
+
+\end{document}
